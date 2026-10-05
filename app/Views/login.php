@@ -12,7 +12,7 @@ $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (empty($email) || empty($password)) {
-    $_SESSION['error'] = "Email dan password harus diisi";
+    $_SESSION['error'] = "Email dan password harus diisi dulu mas";
     header("Location: tampilan.php");
     exit();
 }
