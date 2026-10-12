@@ -1,5 +1,4 @@
-
-<?= $this->extend('layouts/client') ?>
+<?= $this->extend('Modules\Shared\Views\layouts\client') ?>
 
 <?= $this->section('content') ?>
 

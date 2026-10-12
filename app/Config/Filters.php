@@ -13,18 +13,27 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
+use App\Filters\AuthFilter;
+use App\Filters\RoleFilter;
+
 class Filters extends BaseFilters
 {
     /**
-     * Configures aliases for Filter classes to
-     * make reading things nicer and simpler.
+     * ==================================================
+     * FILTER ALIASES
+     * ==================================================
      *
-     * @var array<string, class-string|list<class-string>>
+     * Daftar nama filter yang dapat digunakan
+     * pada Routes.php atau konfigurasi lainnya.
      *
-     * [filter_name => classname]
-     * or [filter_name => [classname1, classname2, ...]]
+     * Filter role digunakan untuk:
+     * - Administrator
+     * - Klien
+     * - Psikolog
      */
+
     public array $aliases = [
+        // Filter bawaan CodeIgniter 4
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
@@ -34,50 +43,61 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'auth'          => \App\Filters\AuthFilter::class,
-        'role'          => \App\Filters\RoleFilter::class,
+
+        // Filter autentikasi Counseling Platform
+        'auth' => AuthFilter::class,
+
+        // Filter pembatasan akses berdasarkan role
+        'role' => RoleFilter::class,
     ];
 
     /**
-     * List of special required filters.
+     * ==================================================
+     * REQUIRED FILTERS
+     * ==================================================
      *
-     * The filters listed here are special. They are applied before and after
-     * other kinds of filters, and always applied even if a route does not exist.
-     *
-     * Filters set by default provide framework functionality. If removed,
-     * those functions will no longer work.
-     *
-     * @see https://codeigniter.com/user_guide/incoming/filters.html#provided-filters
-     *
-     * @var array{before: list<string>, after: list<string>}
+     * Filter khusus yang dibutuhkan oleh framework.
+     * Konfigurasi bawaan tetap dipertahankan.
      */
+
     public array $required = [
         'before' => [
-            'forcehttps', // Force Global Secure Requests
-            'pagecache',  // Web Page Caching
+            'forcehttps',
+            'pagecache',
         ],
+
         'after' => [
-            'pagecache',   // Web Page Caching
-            'performance', // Performance Metrics
-            'toolbar',     // Debug Toolbar
+            'pagecache',
+            'performance',
+            'toolbar',
         ],
     ];
 
     /**
-     * List of filter aliases that are always
-     * applied before and after every request.
+     * ==================================================
+     * GLOBAL FILTERS
+     * ==================================================
      *
-     * @var array{
-     *     before: array<string, array{except: list<string>|string}>|list<string>,
-     *     after: array<string, array{except: list<string>|string}>|list<string>
-     * }
+     * Filter yang dijalankan pada setiap request.
+     *
+     * CSRF diaktifkan untuk melindungi form POST,
+     * termasuk login, register, dan logout.
+     *
+     * Auth dan role tidak dijalankan secara global
+     * karena halaman login dan register harus
+     * dapat diakses tanpa login.
      */
+
     public array $globals = [
         'before' => [
+            'csrf' => [
+                'except' => [],
+            ],
+
             // 'honeypot',
-            // 'csrf',
             // 'invalidchars',
         ],
+
         'after' => [
             // 'honeypot',
             // 'secureheaders',
@@ -85,28 +105,34 @@ class Filters extends BaseFilters
     ];
 
     /**
-     * List of filter aliases that works on a
-     * particular HTTP method (GET, POST, etc.).
+     * ==================================================
+     * HTTP METHOD FILTERS
+     * ==================================================
      *
-     * Example:
-     * 'POST' => ['foo', 'bar']
+     * Filter berdasarkan metode HTTP.
      *
-     * If you use this, you should disable auto-routing because auto-routing
-     * permits any HTTP method to access a controller. Accessing the controller
-     * with a method you don't expect could bypass the filter.
-     *
-     * @var array<string, list<string>>
+     * Kosong karena CSRF sudah diaktifkan
+     * secara global.
      */
+
     public array $methods = [];
 
     /**
-     * List of filter aliases that should run on any
-     * before or after URI patterns.
+     * ==================================================
+     * URI FILTERS
+     * ==================================================
      *
-     * Example:
-     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
+     * Filter khusus berdasarkan pola URL.
      *
-     * @var array<string, array<string, list<string>>>
+     * Untuk saat ini pembatasan akses role
+     * diatur langsung melalui Routes.php.
+     *
+     * Contoh:
+     *
+     * ['filter' => 'role:admin']
+     * ['filter' => 'role:client']
+     * ['filter' => 'role:psychologist']
      */
+
     public array $filters = [];
 }

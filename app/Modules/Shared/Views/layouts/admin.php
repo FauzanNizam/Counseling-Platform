@@ -1,17 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'Dashboard Psikolog - Counseling Platform') ?></title>
+    <title><?= esc($title ?? 'Admin - Counseling Platform') ?></title>
 
     <style>
         :root {
             --purple-900: #3b1678;
             --purple-700: #5b21b6;
-            --purple-600: #6d28d9;
             --purple-100: #ede0ff;
             --background: #f7f5fb;
             --text: #292436;
@@ -34,10 +32,6 @@
         a {
             color: inherit;
             text-decoration: none;
-        }
-
-        button {
-            font: inherit;
         }
 
         .sidebar {
@@ -119,7 +113,6 @@
         }
 
         .main {
-            min-width: 0;
             min-height: 100vh;
             margin-left: 240px;
         }
@@ -135,12 +128,6 @@
             padding: 0 30px;
             background: white;
             border-bottom: 1px solid var(--border);
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .topbar-title {
@@ -173,7 +160,6 @@
         .avatar {
             display: grid;
             place-items: center;
-            flex-shrink: 0;
             width: 39px;
             height: 39px;
             border-radius: 50%;
@@ -211,11 +197,10 @@
         @media (max-width: 768px) {
             .sidebar {
                 width: min(280px, 82vw);
-                padding: 24px 16px;
                 transform: translateX(-100%);
                 visibility: hidden;
                 transition: transform 0.25s ease,
-                            visibility 0.25s ease;
+                    visibility 0.25s ease;
             }
 
             body.menu-open .sidebar {
@@ -225,12 +210,18 @@
 
             .main {
                 margin-left: 0;
-                padding-bottom: 76px;
+                padding-bottom: 70px;
             }
 
             .topbar {
                 height: 62px;
                 padding: 0 16px;
+                gap: 12px;
+            }
+
+            .topbar-left {
+                display: flex;
+                align-items: center;
                 gap: 12px;
             }
 
@@ -296,14 +287,6 @@
                 font-size: 20px;
             }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                transition: none !important;
-            }
-        }
     </style>
 </head>
 
@@ -312,39 +295,39 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand">
             <div class="brand-name">Counseling</div>
-            <div class="brand-caption">Psychologist Workspace</div>
+            <div class="brand-caption">Administrator Workspace</div>
         </div>
 
-        <nav aria-label="Navigasi psikolog">
+        <nav aria-label="Navigasi admin">
             <ul class="menu">
                 <li>
-                    <a href="<?= site_url('psychologist') ?>" class="active">
+                    <a href="<?= site_url('admin') ?>" class="active">
                         <span class="menu-icon">⌂</span>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <span class="menu-icon">▣</span>
-                        <span>Jadwal Konsultasi</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
                         <span class="menu-icon">♧</span>
-                        <span>Klien</span>
+                        <span>Manajemen Pengguna</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <span class="menu-icon">✉</span>
-                        <span>Pesan</span>
+                        <span class="menu-icon">✚</span>
+                        <span>Data Psikolog</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
-                        <span class="menu-icon">○</span>
-                        <span>Profil</span>
+                        <span class="menu-icon">▣</span>
+                        <span>Konsultasi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="menu-icon">▤</span>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>
@@ -353,7 +336,6 @@
         <div class="sidebar-bottom">
             <form action="<?= site_url('logout') ?>" method="post">
                 <?= csrf_field() ?>
-
                 <button type="submit" class="logout-button">
                     <span class="menu-icon">↪</span>
                     <span>Keluar</span>
@@ -367,28 +349,22 @@
     <main class="main">
         <header class="topbar">
             <div class="topbar-left">
-                <button
-                    class="mobile-menu-button"
-                    id="menuButton"
-                    type="button"
-                    aria-label="Buka menu"
-                    aria-controls="sidebar"
-                    aria-expanded="false">☰</button>
+                <button class="mobile-menu-button" id="menuButton" type="button" aria-label="Buka menu"
+                    aria-controls="sidebar" aria-expanded="false">☰</button>
 
-                <div class="topbar-title">Ruang Kerja Psikolog</div>
+                <div class="topbar-title">Administrator Panel</div>
             </div>
 
             <?php
-                $name = session()->get('user_name') ?? 'Psikolog';
-                $initial = strtoupper(substr($name, 0, 1));
+            $name = session()->get('user_name') ?: 'Admin';
+            $initial = mb_strtoupper(mb_substr($name, 0, 1));
             ?>
 
             <div class="profile">
                 <div class="profile-info">
                     <div class="profile-name"><?= esc($name) ?></div>
-                    <div class="profile-role">Psikolog</div>
+                    <div class="profile-role">Administrator</div>
                 </div>
-
                 <div class="avatar"><?= esc($initial) ?></div>
             </div>
         </header>
@@ -405,21 +381,21 @@
     </main>
 
     <nav class="mobile-nav" aria-label="Navigasi mobile">
-        <a href="<?= site_url('psychologist') ?>" class="active">
+        <a href="<?= site_url('admin') ?>" class="active">
             <span class="nav-icon">⌂</span>
             <span>Dashboard</span>
         </a>
         <a href="#">
+            <span class="nav-icon">♧</span>
+            <span>Pengguna</span>
+        </a>
+        <a href="#">
             <span class="nav-icon">▣</span>
-            <span>Jadwal</span>
+            <span>Konsultasi</span>
         </a>
         <a href="#">
-            <span class="nav-icon">✉</span>
-            <span>Pesan</span>
-        </a>
-        <a href="#">
-            <span class="nav-icon">○</span>
-            <span>Profil</span>
+            <span class="nav-icon">▤</span>
+            <span>Laporan</span>
         </a>
     </nav>
 
@@ -458,4 +434,5 @@
     </script>
 
 </body>
+
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Client;
+namespace Modules\Psychologist\Controllers;
 
 use App\Controllers\BaseController;
 
@@ -8,6 +8,6 @@ class Dashboard extends BaseController
 {
     public function index()
     {
-        return view('client/dashboard');
+        return view('Modules\Psychologist\Views\dashboard');
     }
 }

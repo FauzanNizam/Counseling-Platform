@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace Modules\Admin\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use Modules\Shared\Models\UserModel;
 
 class Dashboard extends BaseController
 {
@@ -13,11 +13,12 @@ class Dashboard extends BaseController
 
         $data = [
             'totalUsers' => $userModel->countAllResults(),
+
             'totalPsychologists' => $userModel
-                ->where('role', 'psychologist')
+                ->where('role', 'konsultan')
                 ->countAllResults(),
         ];
 
-        return view('admin/dashboard', $data);
+        return view('Modules\Admin\Views\dashboard', $data);
     }
 }

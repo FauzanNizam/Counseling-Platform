@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controllers\Auth;
+namespace Modules\Auth\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use Modules\Shared\Models\UserModel;
 
 class Register extends BaseController
 {
     public function index()
     {
-        return view('auth/register');
+        return view('Modules\Auth\Views\register');
     }
 
     public function store()
@@ -41,15 +41,36 @@ class Register extends BaseController
 
         $userModel = new UserModel();
 
-        $userModel->insert([
-            'name'     => $this->request->getPost('name'),
-            'email'    => strtolower(trim($this->request->getPost('email'))),
-            'password' => password_hash(
+        $data = [
+            'nama_lengkap' => trim($this->request->getPost('name')),
+            'email' => strtolower(trim($this->request->getPost('email'))),
+            'password_hash' => password_hash(
                 $this->request->getPost('password'),
                 PASSWORD_DEFAULT
             ),
-            'role'     => 'client',
-        ]);
+            'role' => 'klien',
+            'status_akun' => 'aktif',
+        ];
+
+        try {
+            $result = $userModel->insert($data);
+
+            if ($result === false) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('errors', $userModel->errors());
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Registrasi gagal: {message}', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', [
+                    'register' => 'Pendaftaran gagal. Silakan coba lagi.',
+                ]);
+        }
 
         return redirect()->to(site_url('login'))
             ->with('success', 'Pendaftaran berhasil. Silakan masuk.');

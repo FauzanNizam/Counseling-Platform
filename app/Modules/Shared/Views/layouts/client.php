@@ -1,26 +1,32 @@
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'Admin - Counseling Platform') ?></title>
+
+    <title><?= esc($title ?? 'Counseling Platform') ?></title>
 
     <style>
         :root {
             --purple-900: #3b1678;
+            --purple-800: #4c1d95;
             --purple-700: #5b21b6;
+            --purple-600: #6d28d9;
             --purple-100: #ede0ff;
-            --background: #f7f5fb;
+            --purple-50: #f5f0ff;
             --text: #292436;
             --muted: #817b8d;
             --border: #eeeaf3;
+            --surface: #ffffff;
+            --background: #f7f5fb;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -33,6 +39,12 @@
             color: inherit;
             text-decoration: none;
         }
+
+        button {
+            font: inherit;
+        }
+
+        /* DESKTOP LAYOUT */
 
         .sidebar {
             position: fixed;
@@ -54,6 +66,7 @@
         .brand-name {
             font-size: 21px;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .brand-caption {
@@ -68,27 +81,26 @@
             list-style: none;
         }
 
-        .menu a,
-        .logout-button {
+        .menu a {
             display: flex;
             align-items: center;
             gap: 12px;
             min-height: 46px;
             padding: 12px;
-            border: none;
             border-radius: 10px;
             color: #e9ddff;
-            background: transparent;
             font-size: 14px;
-            text-align: left;
-            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
         }
 
         .menu a:hover,
-        .menu a.active,
-        .logout-button:hover {
+        .menu a.active {
             color: white;
             background: var(--purple-700);
+        }
+
+        .menu a.active {
+            font-weight: 600;
         }
 
         .menu-icon {
@@ -108,11 +120,32 @@
             margin: 0;
         }
 
-        .logout-button {
+        .sidebar-bottom .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             width: 100%;
+            min-height: 46px;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #e9ddff;
+            font: inherit;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
         }
 
+        .sidebar-bottom .logout-button:hover {
+            color: white;
+            background: var(--purple-700);
+        }
+
+        /* MAIN AND TOPBAR */
+
         .main {
+            min-width: 0;
             min-height: 100vh;
             margin-left: 240px;
         }
@@ -126,7 +159,7 @@
             justify-content: space-between;
             height: 68px;
             padding: 0 30px;
-            background: white;
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
         }
 
@@ -160,6 +193,7 @@
         .avatar {
             display: grid;
             place-items: center;
+            flex-shrink: 0;
             width: 39px;
             height: 39px;
             border-radius: 50%;
@@ -188,19 +222,25 @@
             border: 1px solid #fde68a;
         }
 
+        /* MOBILE-ONLY CONTROLS */
+
         .mobile-menu-button,
-        .nav-backdrop,
-        .mobile-nav {
+        .mobile-nav,
+        .nav-backdrop {
             display: none;
         }
+
+        /* MOBILE */
 
         @media (max-width: 768px) {
             .sidebar {
                 width: min(280px, 82vw);
+                padding: 24px 16px;
                 transform: translateX(-100%);
                 visibility: hidden;
                 transition: transform 0.25s ease,
                             visibility 0.25s ease;
+                box-shadow: 12px 0 35px #2013331a;
             }
 
             body.menu-open .sidebar {
@@ -208,9 +248,13 @@
                 visibility: visible;
             }
 
+            .brand {
+                margin-bottom: 28px;
+            }
+
             .main {
                 margin-left: 0;
-                padding-bottom: 70px;
+                padding-bottom: 76px;
             }
 
             .topbar {
@@ -223,11 +267,20 @@
                 display: flex;
                 align-items: center;
                 gap: 12px;
+                min-width: 0;
+            }
+
+            .topbar-title {
+                overflow: hidden;
+                font-size: 14px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .mobile-menu-button {
                 display: grid;
                 place-items: center;
+                flex-shrink: 0;
                 width: 38px;
                 height: 38px;
                 border: 1px solid var(--border);
@@ -240,6 +293,11 @@
 
             .profile-info {
                 display: none;
+            }
+
+            .avatar {
+                width: 35px;
+                height: 35px;
             }
 
             .content {
@@ -262,7 +320,7 @@
                 inset: auto 0 0;
                 z-index: 20;
                 display: grid;
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(5, minmax(0, 1fr));
                 padding: 8px 4px max(8px, env(safe-area-inset-bottom));
                 background: white;
                 border-top: 1px solid var(--border);
@@ -272,19 +330,31 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 gap: 4px;
+                min-width: 0;
                 padding: 5px 0;
                 color: var(--muted);
                 font-size: 10px;
+            }
+
+            .mobile-nav .nav-icon {
+                font-size: 20px;
+                line-height: 1.2;
             }
 
             .mobile-nav a.active {
                 color: var(--purple-700);
                 font-weight: 700;
             }
+        }
 
-            .nav-icon {
-                font-size: 20px;
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
             }
         }
     </style>
@@ -292,62 +362,87 @@
 
 <body>
 
+    <?php
+        $name = session()->get('user_name') ?: 'Client';
+        $initial = mb_strtoupper(mb_substr($name, 0, 1));
+    ?>
+
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
+
         <div class="brand">
             <div class="brand-name">Counseling</div>
-            <div class="brand-caption">Administrator Workspace</div>
+            <div class="brand-caption">Mental Health Platform</div>
         </div>
 
-        <nav aria-label="Navigasi admin">
+        <nav aria-label="Navigasi utama">
             <ul class="menu">
                 <li>
-                    <a href="<?= site_url('admin') ?>" class="active">
+                    <a href="<?= site_url('client') ?>" class="active" aria-current="page">
                         <span class="menu-icon">⌂</span>
-                        <span>Dashboard</span>
+                        <span>Beranda</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="#">
+                        <span class="menu-icon">✓</span>
+                        <span>Self-Assessment</span>
+                    </a>
+                </li>
+
                 <li>
                     <a href="#">
                         <span class="menu-icon">♧</span>
-                        <span>Manajemen Pengguna</span>
+                        <span>Cari Psikolog</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <span class="menu-icon">✚</span>
-                        <span>Data Psikolog</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="#">
                         <span class="menu-icon">▣</span>
-                        <span>Konsultasi</span>
+                        <span>Jadwal Saya</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
-                        <span class="menu-icon">▤</span>
-                        <span>Laporan</span>
+                        <span class="menu-icon">✉</span>
+                        <span>Pesan</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="menu-icon">○</span>
+                        <span>Profil</span>
                     </a>
                 </li>
             </ul>
         </nav>
 
+        <!-- LOGOUT -->
         <div class="sidebar-bottom">
             <form action="<?= site_url('logout') ?>" method="post">
                 <?= csrf_field() ?>
+
                 <button type="submit" class="logout-button">
                     <span class="menu-icon">↪</span>
                     <span>Keluar</span>
                 </button>
             </form>
         </div>
+
     </aside>
 
     <div class="nav-backdrop" id="navBackdrop"></div>
 
+    <!-- MAIN -->
     <main class="main">
+
+        <!-- TOPBAR -->
         <header class="topbar">
+
             <div class="topbar-left">
                 <button
                     class="mobile-menu-button"
@@ -355,55 +450,74 @@
                     type="button"
                     aria-label="Buka menu"
                     aria-controls="sidebar"
-                    aria-expanded="false">☰</button>
+                    aria-expanded="false"
+                >☰</button>
 
-                <div class="topbar-title">Administrator Panel</div>
+                <div class="topbar-title">Counseling Platform</div>
             </div>
 
-            <?php
-                $name = session()->get('user_name') ?? 'Admin';
-                $initial = strtoupper(substr($name, 0, 1));
-            ?>
-
+            <!-- PROFIL PENGGUNA -->
             <div class="profile">
                 <div class="profile-info">
                     <div class="profile-name"><?= esc($name) ?></div>
-                    <div class="profile-role">Administrator</div>
+                    <div class="profile-role">Client</div>
                 </div>
-                <div class="avatar"><?= esc($initial) ?></div>
+
+                <div class="avatar" aria-label="Avatar <?= esc($name, 'attr') ?>">
+                    <?= esc($initial) ?>
+                </div>
             </div>
+
         </header>
 
+        <!-- CONTENT -->
         <section class="content">
-            <?php if (session()->getFlashdata('access_error')): ?>
+
+            <?php $accessError = session()->getFlashdata('access_error'); ?>
+
+            <?php if ($accessError): ?>
                 <div class="alert alert-warning" role="alert">
-                    <?= esc(session()->getFlashdata('access_error')) ?>
+                    <?= esc($accessError) ?>
                 </div>
             <?php endif; ?>
 
             <?= $this->renderSection('content') ?>
+
         </section>
+
     </main>
 
+    <!-- MOBILE NAVIGATION -->
     <nav class="mobile-nav" aria-label="Navigasi mobile">
-        <a href="<?= site_url('admin') ?>" class="active">
+
+        <a href="<?= site_url('client') ?>" class="active" aria-current="page">
             <span class="nav-icon">⌂</span>
-            <span>Dashboard</span>
+            <span>Beranda</span>
         </a>
+
         <a href="#">
-            <span class="nav-icon">♧</span>
-            <span>Pengguna</span>
+            <span class="nav-icon">✓</span>
+            <span>Assessment</span>
         </a>
+
         <a href="#">
             <span class="nav-icon">▣</span>
-            <span>Konsultasi</span>
+            <span>Jadwal</span>
         </a>
+
         <a href="#">
-            <span class="nav-icon">▤</span>
-            <span>Laporan</span>
+            <span class="nav-icon">✉</span>
+            <span>Pesan</span>
         </a>
+
+        <a href="#">
+            <span class="nav-icon">○</span>
+            <span>Profil</span>
+        </a>
+
     </nav>
 
+    <!-- JAVASCRIPT MOBILE MENU -->
     <script>
         const menuButton = document.getElementById('menuButton');
         const backdrop = document.getElementById('navBackdrop');

@@ -1,5 +1,5 @@
 
-<?= $this->extend('layouts/admin') ?>
+<?= $this->extend('Modules\Shared\Views\layouts\admin') ?>
 
 <?= $this->section('content') ?>
 
