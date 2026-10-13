@@ -1,0 +1,233 @@
+
+/* ========================================
+   ADMIN - USER MANAGEMENT
+======================================== */
+
+.users-panel {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.users-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.users-panel-header h2 {
+    font-size: 18px;
+    color: var(--purple-900);
+}
+
+.users-panel-header span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.users-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.users-filters input,
+.users-filters select {
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #fff;
+    font-size: 14px;
+}
+
+.users-filters input {
+    flex: 2 1 220px;
+    min-width: 0;
+}
+
+.users-filters select {
+    flex: 1 1 150px;
+}
+
+.users-filter-button,
+.users-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.users-filter-button {
+    background: var(--purple-600);
+    color: #fff;
+}
+
+.users-reset-button {
+    background: #f3f0fa;
+    color: var(--purple-900);
+}
+
+.users-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.users-table th {
+    background: #f8f6fc;
+    color: var(--purple-900);
+    font-weight: 600;
+}
+
+.users-table td {
+    color: #424242;
+}
+
+.users-table tbody tr:hover {
+    background: #faf9fd;
+}
+
+.users-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.users-status-aktif {
+    background: #e7f7ed;
+    color: #187442;
+}
+
+.users-status-nonaktif {
+    background: #f1f1f1;
+    color: #666;
+}
+
+.users-status-ditangguhkan {
+    background: #fff0df;
+    color: #a45c08;
+}
+
+.users-empty {
+    padding: 28px !important;
+    text-align: center;
+    color: var(--muted) !important;
+}
+
+.users-pagination {
+    margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+    .users-panel {
+        padding: 16px;
+    }
+
+    .users-filters {
+        flex-direction: column;
+    }
+
+    .users-filters input,
+    .users-filters select {
+        flex: none;
+        width: 100%;
+    }
+}
+
+/* =========================================
+   TOMBOL AKSI DETAIL DAN EDIT
+========================================= */
+
+.users-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.users-action-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.users-action-buttons .btn-outline-primary {
+    color: #6d28d9;
+    border-color: #6d28d9;
+}
+
+.users-action-buttons .btn-outline-primary:hover {
+    background-color: #6d28d9;
+    border-color: #6d28d9;
+    color: #fff;
+}
+
+.users-action-buttons .btn-outline-secondary {
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+.users-action-buttons .btn-outline-secondary:hover {
+    background-color: #64748b;
+    border-color: #64748b;
+    color: #fff;
+}
+
+/* =========================================
+   TOMBOL HAPUS PENGGUNA
+========================================= */
+
+.users-delete-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+.users-action-buttons .btn-outline-danger {
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+.users-action-buttons .btn-outline-danger:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+.users-action-buttons .btn-outline-danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

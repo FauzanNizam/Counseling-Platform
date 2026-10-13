@@ -1,28 +1,210 @@
-.dashboard-header { margin-bottom: 28px; }
-.dashboard-header h1 { margin-bottom: 8px; color: var(--purple-900); font-size: 26px; }
-.dashboard-header p, .management-card p, .schedule-card p {
-    color: var(--muted); font-size: 14px; line-height: 1.6;
+
+/* ========================================
+   DASHBOARD HEADER
+======================================== */
+
+.dashboard-header {
+    margin-bottom: 28px;
 }
+
+.dashboard-header h1 {
+    margin-bottom: 8px;
+    color: var(--purple-900);
+    font-size: 26px;
+}
+
+.dashboard-header p,
+.management-card p,
+.schedule-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   STATISTICS GRID
+======================================== */
+
 .stats-grid {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px; margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
 }
-.stat-card, .management-card, .schedule-card {
-    padding: 24px; background: white;
-    border: 1px solid var(--border); border-radius: 14px;
+
+
+/* ========================================
+   DASHBOARD CARDS
+======================================== */
+
+.stat-card,
+.management-card,
+.schedule-card {
+    padding: 24px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
 }
-.stat-card span { color: var(--muted); font-size: 13px; }
-.stat-card h2 { margin-top: 12px; color: var(--purple-900); font-size: 30px; }
-.management-card h2, .schedule-card h2 {
-    margin-bottom: 10px; color: var(--purple-900); font-size: 18px;
+
+
+/* ========================================
+   STATISTICS CARD
+======================================== */
+
+.stat-card span {
+    color: var(--muted);
+    font-size: 13px;
 }
-.schedule-card h2 { margin-bottom: 18px; }
-.management-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+
+.stat-card h2 {
+    margin-top: 12px;
+    color: var(--purple-900);
+    font-size: 30px;
+}
+
+
+/* ========================================
+   MANAGEMENT & SCHEDULE CARD
+======================================== */
+
+.management-card h2,
+.schedule-card h2 {
+    margin-bottom: 10px;
+    color: var(--purple-900);
+    font-size: 18px;
+}
+
+.schedule-card h2 {
+    margin-bottom: 18px;
+}
+
+
+/* ========================================
+   MANAGEMENT ACTIONS
+======================================== */
+
+.management-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
 .management-actions button {
-    padding: 11px 16px; border: none; border-radius: 9px;
-    color: white; background: var(--purple-600); cursor: not-allowed; opacity: .6;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    background: var(--purple-600);
+    cursor: not-allowed;
+    opacity: 0.6;
 }
+
+
+/* ========================================
+   RESPONSIVE - TABLET
+======================================== */
+
+@media (max-width: 1100px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* ========================================
+   RESPONSIVE - MOBILE
+======================================== */
+
 @media (max-width: 768px) {
-    .stats-grid { grid-template-columns: 1fr; }
-    .dashboard-header h1 { font-size: 22px; }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1 {
+        font-size: 22px;
+    }
+
+    .stat-card,
+    .management-card,
+    .schedule-card {
+        padding: 18px;
+    }
+
+    .stat-card h2 {
+        font-size: 26px;
+    }
+}
+
+/* =========================================
+   TOMBOL NAVIGASI MANAJEMEN PENGGUNA
+========================================= */
+
+.dashboard-management-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border-radius: 10px;
+    background-color: #6d28d9;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-management-link:hover {
+    background-color: #5b21b6;
+    color: #ffffff;
+}
+
+.dashboard-management-link:focus-visible {
+    outline: 3px solid #c4b5fd;
+    outline-offset: 3px;
+}
+
+.management-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ==========================================
+   PERBAIKAN POSISI SIDEBAR ADMIN
+   ========================================== */
+
+/* Mengurangi jarak menu dari sisi kiri sidebar */
+.sidebar .menu {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+}
+
+/* Menggeser ikon dan teks menu ke kiri */
+.sidebar .menu li a {
+    padding-left: 14px;
+    padding-right: 14px;
+    gap: 12px;
+}
+
+/* Menyamakan lebar area ikon */
+.sidebar .menu-icon {
+    width: 20px;
+    min-width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Menjaga posisi teks tetap rapi */
+.sidebar .menu li a span:last-child {
+    text-align: left;
+}
+
+/* Khusus sidebar desktop */
+@media (min-width: 769px) {
+    .sidebar .menu {
+        margin-left: 0px;
+    }
 }
