@@ -1,0 +1,93 @@
+
+/* GLOBAL ALERT MODAL */
+
+.app-alert-card {
+    border: none;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 20px 70px rgba(35, 12, 75, 0.22);
+}
+
+.app-alert-icon {
+    width: 82px;
+    height: 82px;
+    margin: 4px auto 24px;
+    border: 4px solid #ffcb9e;
+    border-radius: 50%;
+    color: #f5a45d;
+    font-size: 54px;
+    font-weight: 300;
+    line-height: 74px;
+}
+
+.app-alert-icon.is-success {
+    border-color: #a7e8c0;
+    color: #22a66b;
+}
+
+.app-alert-icon.is-error {
+    border-color: #f5b7b7;
+    color: #d63c3c;
+}
+
+.app-alert-title {
+    margin-bottom: 12px;
+    color: #35116d;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.app-alert-message {
+    color: #716780;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.app-alert-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.app-alert-btn {
+    min-width: 110px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 9px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.app-alert-btn-primary {
+    background: #6d28d9;
+}
+
+.app-alert-btn-cancel {
+    background: #8b8497;
+}
+
+.app-alert-btn[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 576px) {
+    .app-alert-card {
+        padding: 16px;
+    }
+
+    .app-alert-title {
+        font-size: 21px;
+    }
+}
+
+/* Rincian perubahan pada popup sukses */
+.app-alert-message {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    max-height: 320px;
+    overflow-y: auto;
+    line-height: 1.7;
+}

@@ -1,4 +1,3 @@
-
 <?php
 
 use CodeIgniter\Router\RouteCollection;
@@ -137,7 +136,9 @@ $routes->group(
 //     'filter' => 'role:admin',
 // ]);
 
+
 // HMVC
+
 $routes->group(
     'admin',
     [
@@ -145,12 +146,58 @@ $routes->group(
         'filter' => 'role:admin',
     ],
     static function ($routes) {
+
         // Dashboard Admin
         $routes->get('/', 'Dashboard::index');
 
-        // Tambahkan route Admin lainnya di sini.
+        // F-21: READ
+        $routes->get('users', 'Users::index');
+
+        // F-21: CREATE
+        $routes->get('users/create', 'Users::create');
+        $routes->post('users/store', 'Users::store');
+
+        // READ DETAIL - Detail Pengguna
+        $routes->get('users/(:num)', 'Users::show/$1');
+
+        // UPDATE - Edit Pengguna
+        $routes->get('users/(:num)/edit', 'Users::edit/$1');
+        $routes->post('users/(:num)/update', 'Users::update/$1');
+
+        $routes->post('users/(:num)/delete', 'Users::delete/$1');
+
+        // =====================================
+// F-22: MANAJEMEN KONSULTAN
+// =====================================
+    
+        // Daftar konsultan
+        $routes->get('consultants', 'Consultants::index');
+
+        // Tambah konsultan
+        $routes->get('consultants/create', 'Consultants::create');
+        $routes->post('consultants/store', 'Consultants::store');
+
+        // Detail konsultan
+        $routes->get('consultants/(:num)', 'Consultants::show/$1');
+
+        // Edit konsultan
+        $routes->get('consultants/(:num)/edit', 'Consultants::edit/$1');
+        $routes->post('consultants/(:num)/update', 'Consultants::update/$1');
+
+        // Verifikasi konsultan
+        $routes->post('consultants/(:num)/verify', 'Consultants::verify/$1');
+
+        // Hapus konsultan
+        $routes->post('consultants/(:num)/delete', 'Consultants::delete/$1');
+
+        $routes->get('consultations', 'Consultations::index');
+        $routes->get('consultations/(:num)', 'Consultations::show/$1');
+
+        $routes->get('reports', 'Reports::index');
     }
 );
+
+
 
 
 // ======================================================
