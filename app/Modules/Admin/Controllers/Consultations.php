@@ -88,8 +88,8 @@ class Consultations extends BaseController
         $query = $db->table('konsultasi k')
             ->select(
                 'k.*, ' .
-                'klien.nama_lengkap AS nama_klien, ' .
-                'psikolog.nama_lengkap AS nama_psikolog'
+                    'klien.nama_lengkap AS nama_klien, ' .
+                    'psikolog.nama_lengkap AS nama_psikolog'
             )
             ->join(
                 'users klien',
@@ -161,8 +161,8 @@ class Consultations extends BaseController
         $consultation = $db->table('konsultasi k')
             ->select(
                 'k.*, ' .
-                'klien.nama_lengkap AS nama_klien, ' .
-                'psikolog.nama_lengkap AS nama_psikolog'
+                    'klien.nama_lengkap AS nama_klien, ' .
+                    'psikolog.nama_lengkap AS nama_psikolog'
             )
             ->join(
                 'users klien',
@@ -184,12 +184,183 @@ class Consultations extends BaseController
                 ->with('error', 'Data konsultasi tidak ditemukan.');
         }
 
+        $payment = $db->table('pembayaran')
+            ->where('id_konsultasi', (int) $id)
+            ->get()
+            ->getRowArray();
+
+
         return view(
             'Modules\Admin\Views\consultations\show',
             [
                 'title' => 'Detail Konsultasi - Counseling Platform',
                 'consultation' => $consultation,
+                'payment' => $payment,
             ]
         );
+    }
+
+    /**
+     * Menyetujui bukti pembayaran yang masih Pending.
+     */
+    public function verifyPayment($id)
+    {
+        if (!$this->authorized()) {
+            return $this->deny();
+        }
+
+        if (!ctype_digit((string) $id) || (int) $id <= 0) {
+            return redirect()->to(site_url('admin/consultations'))
+                ->with('error', 'ID konsultasi tidak valid.');
+        }
+
+        $db = db_connect();
+        $id = (int) $id;
+
+        $pembayaran = $db->table('pembayaran')
+            ->where('id_konsultasi', $id)
+            ->get()
+            ->getRowArray();
+
+        if (!$pembayaran || $pembayaran['status_bayar'] !== 'Pending') {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Pembayaran tidak ditemukan atau sudah diproses.');
+        }
+
+        if (empty($pembayaran['bukti_bayar'])) {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Bukti pembayaran belum diunggah.');
+        }
+
+
+        $updated = $db->table('pembayaran')
+            ->where('id_pembayaran', $pembayaran['id_pembayaran'])
+            ->where('status_bayar', 'Pending')
+            ->update([
+                'status_bayar' => 'Sukses',
+                'tanggal_bayar' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        if (!$updated || $db->affectedRows() !== 1) {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Verifikasi gagal. Silakan periksa status pembayaran.');
+        }
+
+        return redirect()->to(site_url('admin/consultations/' . $id))
+            ->with('success', 'Pembayaran berhasil diverifikasi.');
+    }
+
+    /**
+     * Menandai pembayaran Pending sebagai Gagal.
+     */
+    public function rejectPayment($id)
+    {
+        if (!$this->authorized()) {
+            return $this->deny();
+        }
+
+        if (!ctype_digit((string) $id) || (int) $id <= 0) {
+            return redirect()->to(site_url('admin/consultations'))
+                ->with('error', 'ID konsultasi tidak valid.');
+        }
+
+        $db = db_connect();
+        $id = (int) $id;
+
+        $pembayaran = $db->table('pembayaran')
+            ->where('id_konsultasi', $id)
+            ->get()
+            ->getRowArray();
+
+        if (!$pembayaran || $pembayaran['status_bayar'] !== 'Pending') {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Pembayaran tidak ditemukan atau sudah diproses.');
+        }
+
+        if (empty($pembayaran['bukti_bayar'])) {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Bukti pembayaran belum diunggah.');
+        }
+
+
+        $updated = $db->table('pembayaran')
+            ->where('id_pembayaran', $pembayaran['id_pembayaran'])
+            ->where('status_bayar', 'Pending')
+            ->update([
+                'status_bayar' => 'Gagal',
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        if (!$updated || $db->affectedRows() !== 1) {
+            return redirect()->to(site_url('admin/consultations/' . $id))
+                ->with('error', 'Penolakan gagal. Silakan periksa status pembayaran.');
+        }
+
+        return redirect()->to(site_url('admin/consultations/' . $id))
+            ->with('success', 'Pembayaran ditandai gagal.');
+    }
+
+    /**
+     * Menampilkan bukti pembayaran khusus administrator.
+     */
+    public function paymentProof($id)
+    {
+        if (!$this->authorized()) {
+            return $this->deny();
+        }
+
+        if (!ctype_digit((string) $id) || (int) $id <= 0) {
+            return redirect()->to(site_url('admin/consultations'))
+                ->with('error', 'ID konsultasi tidak valid.');
+        }
+
+        $db = db_connect();
+
+        $payment = $db->table('pembayaran')
+            ->where('id_konsultasi', (int) $id)
+            ->get()
+            ->getRowArray();
+
+        if (!$payment || empty($payment['bukti_bayar'])) {
+            return redirect()->to(site_url('admin/consultations/' . (int) $id))
+                ->with('error', 'Bukti pembayaran tidak ditemukan.');
+        }
+
+        $folder = WRITEPATH . 'uploads/bukti_pembayaran';
+        $filename = basename($payment['bukti_bayar']);
+        $path = $folder . DIRECTORY_SEPARATOR . $filename;
+
+        if (!is_file($path)) {
+            return redirect()->to(site_url('admin/consultations/' . (int) $id))
+                ->with('error', 'File bukti pembayaran tidak ditemukan.');
+        }
+
+        $mime = mime_content_type($path);
+
+        $allowedMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+        ];
+
+        if (!in_array($mime, $allowedMimeTypes, true)) {
+            return redirect()->to(site_url('admin/consultations/' . (int) $id))
+                ->with('error', 'Format bukti pembayaran tidak didukung.');
+        }
+
+
+        $imageContent = file_get_contents($path);
+
+        if ($imageContent === false) {
+            return redirect()->to(site_url('admin/consultations/' . (int) $id))
+                ->with('error', 'Bukti pembayaran gagal dibaca.');
+        }
+
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('X-Content-Type-Options', 'nosniff')
+            ->setHeader('Cache-Control', 'private, no-store')
+            ->setBody($imageContent);
     }
 }

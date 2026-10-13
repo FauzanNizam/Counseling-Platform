@@ -167,9 +167,9 @@ $routes->group(
         $routes->post('users/(:num)/delete', 'Users::delete/$1');
 
         // =====================================
-// F-22: MANAJEMEN KONSULTAN
-// =====================================
-    
+        // F-22: MANAJEMEN KONSULTAN
+        // =====================================
+
         // Daftar konsultan
         $routes->get('consultants', 'Consultants::index');
 
@@ -192,6 +192,20 @@ $routes->group(
 
         $routes->get('consultations', 'Consultations::index');
         $routes->get('consultations/(:num)', 'Consultations::show/$1');
+
+        $routes->post(
+            'consultations/(:num)/payment/verify',
+            'Consultations::verifyPayment/$1'
+        );
+
+        $routes->post(
+            'consultations/(:num)/payment/reject',
+            'Consultations::rejectPayment/$1'
+        );
+        $routes->get(
+            'consultations/(:num)/payment/proof',
+            'Consultations::paymentProof/$1'
+        );
 
         $routes->get('reports', 'Reports::index');
     }

@@ -160,7 +160,7 @@
                 Mulai dengan mengisi kuesioner terlebih dahulu.
             </p>
 
-            <a href="<?= site_url('client/assessment') ?>"
+            <a href="<?= site_url('client/assessment/new') ?>"
                 class="history-button">
                 Mulai Assessment
             </a>
@@ -210,7 +210,7 @@
 
     <?php endif; ?>
 
-    <a href="<?= site_url('client/assessment') ?>"
+    <a href="<?= site_url('client/assessment/new') ?>"
         class="history-button">
         Isi Assessment Baru
     </a>
