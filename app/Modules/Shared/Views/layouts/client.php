@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -239,7 +238,7 @@
                 transform: translateX(-100%);
                 visibility: hidden;
                 transition: transform 0.25s ease,
-                            visibility 0.25s ease;
+                    visibility 0.25s ease;
                 box-shadow: 12px 0 35px #2013331a;
             }
 
@@ -350,6 +349,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             *,
             *::before,
             *::after {
@@ -363,8 +363,8 @@
 <body>
 
     <?php
-        $name = session()->get('user_name') ?: 'Client';
-        $initial = mb_strtoupper(mb_substr($name, 0, 1));
+    $name = session()->get('user_name') ?: 'Client';
+    $initial = mb_strtoupper(mb_substr($name, 0, 1));
     ?>
 
     <!-- SIDEBAR -->
@@ -378,46 +378,48 @@
         <nav aria-label="Navigasi utama">
             <ul class="menu">
                 <li>
-                    <a href="<?= site_url('client') ?>" class="active" aria-current="page">
+                    <a href="<?= site_url('client') ?>"
+                        class="<?= url_is('client') || url_is('client/') ? 'active' : '' ?>"
+                        <?= url_is('client') || url_is('client/') ? 'aria-current="page"' : '' ?>>
                         <span class="menu-icon">⌂</span>
                         <span>Beranda</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="<?= site_url('client/assessment') ?>"
+                        class="<?= url_is('client/assessment') || url_is('client/assessment/*') ? 'active' : '' ?>">
                         <span class="menu-icon">✓</span>
                         <span>Self-Assessment</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="<?= site_url('client/konsultan') ?>">
                         <span class="menu-icon">♧</span>
                         <span>Cari Psikolog</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="<?= site_url('client/jadwal') ?>">
                         <span class="menu-icon">▣</span>
                         <span>Jadwal Saya</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="#">
-                        <span class="menu-icon">✉</span>
-                        <span>Pesan</span>
-                    </a>
-                </li>
+
+
 
                 <li>
-                    <a href="#">
+                    <a href="<?= site_url('client/profile') ?>"
+                        class="<?= url_is('client/profile') ? 'active' : '' ?>"
+                        <?= url_is('client/profile') ? 'aria-current="page"' : '' ?>>
                         <span class="menu-icon">○</span>
                         <span>Profil</span>
                     </a>
                 </li>
+
             </ul>
         </nav>
 
@@ -450,23 +452,29 @@
                     type="button"
                     aria-label="Buka menu"
                     aria-controls="sidebar"
-                    aria-expanded="false"
-                >☰</button>
+                    aria-expanded="false">☰</button>
 
                 <div class="topbar-title">Counseling Platform</div>
             </div>
 
+
             <!-- PROFIL PENGGUNA -->
-            <div class="profile">
+            <a href="<?= site_url('client/profile') ?>"
+                class="profile"
+                title="Buka Profil Saya"
+                aria-label="Buka profil <?= esc($name, 'attr') ?>"
+                style="color: inherit; text-decoration: none;">
+
                 <div class="profile-info">
                     <div class="profile-name"><?= esc($name) ?></div>
                     <div class="profile-role">Client</div>
                 </div>
 
-                <div class="avatar" aria-label="Avatar <?= esc($name, 'attr') ?>">
+                <div class="avatar" aria-hidden="true">
                     <?= esc($initial) ?>
                 </div>
-            </div>
+            </a>
+
 
         </header>
 
@@ -495,25 +503,31 @@
             <span>Beranda</span>
         </a>
 
-        <a href="#">
-            <span class="nav-icon">✓</span>
-            <span>Assessment</span>
+        <a href="<?= site_url('client/assessment') ?>"
+            class="<?= url_is('client/assessment') || url_is('client/assessment/*') ? 'active' : '' ?>">
+            <span class="menu-icon">✓</span>
+            <span>Self-Assessment</span>
         </a>
 
-        <a href="#">
+        <a href="<?= site_url('client/jadwal') ?>">
             <span class="nav-icon">▣</span>
             <span>Jadwal</span>
         </a>
 
-        <a href="#">
-            <span class="nav-icon">✉</span>
-            <span>Pesan</span>
-        </a>
+        <a href="<?= site_url('client/konsultan') ?>">
+            <span class="nav-icon">♧</span>
+            <span>Psikolog</span>
 
-        <a href="#">
-            <span class="nav-icon">○</span>
-            <span>Profil</span>
-        </a>
+
+            <li>
+                <a href="<?= site_url('client/profile') ?>"
+                    class="<?= url_is('client/profile') ? 'active' : '' ?>"
+                    <?= url_is('client/profile') ? 'aria-current="page"' : '' ?>>
+                    <span class="menu-icon">○</span>
+                    <span>Profil</span>
+                </a>
+            </li>
+
 
     </nav>
 
@@ -553,4 +567,5 @@
     </script>
 
 </body>
+
 </html>
