@@ -385,172 +385,282 @@
         </p>
 
         <div class="hero-actions">
-            <a href="#" class="hero-button primary">
+
+            <a
+                href="<?= site_url('client/konsultan') ?>"
+                class="hero-button primary">
                 📅 Booking Sekarang
             </a>
 
-            <a href="#" class="hero-button secondary">
+            <a
+                href="<?= site_url('client/assessment') ?>"
+                class="hero-button secondary">
                 📋 Self-Assessment
             </a>
+
         </div>
     </section>
 
-    <!-- INFORMASI JADWAL CONTOH -->
+
+    <!-- INFORMASI JADWAL -->
     <section class="notif-banner">
         <div class="notif-icon">🔔</div>
 
         <div class="notif-copy">
-            <strong>Contoh informasi jadwal</strong>
-            <div>
-                Jika sudah memiliki booking, informasi jadwal
-                konseling berikutnya akan ditampilkan di sini.
-            </div>
+            <?php if (!empty($jadwalBerikutnya)): ?>
+                <strong>Informasi Konsultasi Berikutnya</strong>
+
+                <div>
+                    Konsultasi dengan
+                    <strong>
+                        <?= esc($jadwalBerikutnya['nama_konsultan']) ?>
+                    </strong>
+                    pada
+                    <?= esc(date(
+                        'd-m-Y',
+                        strtotime($jadwalBerikutnya['tanggal'])
+                    )) ?>,
+                    pukul
+                    <?= esc(substr($jadwalBerikutnya['waktu_mulai'], 0, 5)) ?>.
+                </div>
+
+                <div style="margin-top: 6px;">
+                    Status:
+                    <strong>
+                        <?= esc($jadwalBerikutnya['status']) ?>
+                    </strong>
+                </div>
+              
+                <?php if (
+                    $jadwalBerikutnya['status'] === 'Dikonfirmasi'
+                    && !empty($jadwalBerikutnya['telepon_konsultan'])
+                ): ?>
+                    <?php
+                    $nomorWa = preg_replace(
+                        '/\D+/',
+                        '',
+                        $jadwalBerikutnya['telepon_konsultan']
+                    );
+
+                    if (str_starts_with($nomorWa, '0')) {
+                        $nomorWa = '62' . substr($nomorWa, 1);
+                    }
+                    ?>
+
+                    <?php if ($nomorWa !== ''): ?>
+                        <a
+                            href="https://wa.me/<?= esc($nomorWa) ?>?text=<?= rawurlencode('Halo, saya ingin menghubungi Anda terkait jadwal konsultasi saya.') ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="
+                display: inline-block;
+                margin-top: 10px;
+                padding: 10px 16px;
+                border-radius: 9px;
+                background: #25D366;
+                color: #fff;
+                text-decoration: none;
+                font-weight: 600;
+            ">
+                            Chat via WhatsApp
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+                
+
+                <a href="<?= site_url('client/jadwal') ?>">
+                    Lihat Jadwal Saya →
+                </a>
+            <?php else: ?>
+                <strong>Belum Ada Jadwal Konsultasi</strong>
+
+                <div>
+                    Kamu belum memiliki pengajuan konsultasi aktif.
+                    Cari psikolog dan pilih jadwal yang sesuai dengan kebutuhanmu.
+                </div>
+
+                <a href="<?= site_url('client/konsultan') ?>">
+                    Cari Psikolog →
+                </a>
+            <?php endif; ?>
         </div>
     </section>
+
+
 
     <!-- LAYANAN -->
     <section class="dashboard-section">
         <div class="section-heading">
             <div>
                 <h2>Layanan Kami</h2>
-                <p>Pilih cara konseling yang paling nyaman untukmu.</p>
+                <p>
+                    Fitur yang dapat kamu gunakan di Counseling Platform.
+                </p>
             </div>
         </div>
 
         <div class="service-grid">
-
             <article class="service-card featured">
-                <div class="service-icon">📹</div>
+                <div class="service-icon">🧑‍⚕️</div>
 
                 <div>
-                    <h3>Online Session</h3>
+                    <h3>Cari Psikolog</h3>
                     <p>
-                        Chat atau video call dengan psikolog
-                        dari mana saja.
+                        Temukan psikolog berdasarkan spesialisasi,
+                        pengalaman, dan profil yang tersedia.
                     </p>
-                    <div class="service-price">
-                        Mulai dari Rp 150.000 →
-                    </div>
+
+                    <a
+                        class="service-price"
+                        href="<?= site_url('client/konsultan') ?>"
+                        style="text-decoration:none;">
+                        Cari Psikolog →
+                    </a>
                 </div>
             </article>
 
             <article class="service-card">
-                <div class="service-icon pickup">📍</div>
+                <div class="service-icon pickup">📋</div>
 
                 <div>
-                    <h3>Pick-up Session</h3>
+                    <h3>Self-Assessment</h3>
                     <p>
-                        Konseling secara langsung dengan
-                        pengaturan lokasi pertemuan.
+                        Isi penilaian mandiri dan lihat riwayat
+                        hasil assessment yang pernah kamu kerjakan.
                     </p>
-                    <div class="service-price">
-                        Lihat layanan →
-                    </div>
+
+                    <a
+                        class="service-price"
+                        href="<?= site_url('client/assessment') ?>"
+                        style="text-decoration:none;">
+                        Mulai Assessment →
+                    </a>
                 </div>
             </article>
 
+            <article class="service-card">
+                <div class="service-icon">📅</div>
+
+                <div>
+                    <h3>Jadwal Konsultasi</h3>
+                    <p>
+                        Pantau pengajuan konsultasi dan status
+                        konfirmasi dari psikolog.
+                    </p>
+
+                    <a
+                        class="service-price"
+                        href="<?= site_url('client/jadwal') ?>"
+                        style="text-decoration:none;">
+                        Lihat Jadwal →
+                    </a>
+                </div>
+            </article>
+
+            <article class="service-card">
+                <div class="service-icon pickup">💬</div>
+
+                <div>
+                    <h3>Konsultasi via WhatsApp</h3>
+                    <p>
+                        Hubungi psikolog melalui WhatsApp setelah
+                        konsultasimu dikonfirmasi.
+                    </p>
+
+                    <a
+                        class="service-price"
+                        href="<?= site_url('client/jadwal') ?>"
+                        style="text-decoration:none;">
+                        Buka Jadwal Saya →
+                    </a>
+                </div>
+            </article>
         </div>
     </section>
+
 
     <!-- PSIKOLOG -->
     <section class="dashboard-section">
         <div class="section-heading">
             <div>
-                <h2>Psikolog Tersedia Hari Ini</h2>
-                <p>Kenali pilihan psikolog sebelum membuat booking.</p>
+                <h2>Psikolog Tersedia</h2>
+                <p>
+                    <?= esc((string) ($jumlahKonsultan ?? 0)) ?>
+                    psikolog terdaftar di platform.
+                </p>
             </div>
 
-            <a href="#" class="section-link">Lihat semua →</a>
+            <a
+                href="<?= site_url('client/konsultan') ?>"
+                class="section-link">
+                Lihat semua →
+            </a>
         </div>
 
-        <div class="psychologist-grid">
+        <?php if (empty($konsultan)): ?>
+            <div class="jadwal-empty">
+                Belum ada psikolog yang tersedia.
+            </div>
+        <?php else: ?>
+            <div class="psychologist-grid">
+                <?php foreach ($konsultan as $item): ?>
+                    <?php
+                    $nama = $item['nama_lengkap'] ?? 'Psikolog';
+                    $kataNama = preg_split('/\s+/', trim((string) $nama)) ?: [];
+                    $inisial = '';
 
-            <article class="psychologist-card">
-                <div class="psychologist-profile">
-                    <div class="psychologist-avatar">SN</div>
+                    foreach (array_slice($kataNama, 0, 2) as $kata) {
+                        $inisial .= mb_substr((string) $kata, 0, 1);
+                    }
 
-                    <div>
-                        <h3>Dr. Siti Nurhaliza</h3>
-                        <div class="psychologist-specialty">
-                            Psikolog Klinis
+                    $inisial = mb_strtoupper($inisial);
+
+                    if ($inisial === '') {
+                        $inisial = 'PS';
+                    }
+                    ?>
+
+                    <article class="psychologist-card">
+                        <div class="psychologist-profile">
+                            <div class="psychologist-avatar">
+                                <?= esc($inisial) ?>
+                            </div>
+
+                            <div>
+                                <h3><?= esc($nama) ?></h3>
+                                <div class="psychologist-specialty">
+                                    <?= esc(
+                                        $item['spesialisasi']
+                                            ?? 'Spesialisasi belum tersedia'
+                                    ) ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="psychologist-rating">
-                    ★ 4.9 <span>· Profil contoh</span>
-                </div>
+                        <div class="psychologist-footer">
+                            <div class="psychologist-price">
+                                <?= esc(
+                                    $item['pengalaman_tahun'] ?? 0
+                                ) ?> tahun
+                                <small>pengalaman</small>
+                            </div>
 
-                <div class="psychologist-footer">
-                    <div class="psychologist-price">
-                        Rp 150.000
-                        <small>per sesi</small>
-                    </div>
-
-                    <button class="small-button" type="button">
-                        Lihat Profil
-                    </button>
-                </div>
-            </article>
-
-            <article class="psychologist-card">
-                <div class="psychologist-profile">
-                    <div class="psychologist-avatar">AP</div>
-
-                    <div>
-                        <h3>Dr. Andi Pratama</h3>
-                        <div class="psychologist-specialty">
-                            Konseling Keluarga
+                            <a
+                                class="small-button"
+                                href="<?= site_url(
+                                            'client/konsultan/' .
+                                                ($item['id_profil'] ?? '')
+                                        ) ?>"
+                                style="text-decoration:none;">
+                                Lihat Profil
+                            </a>
                         </div>
-                    </div>
-                </div>
-
-                <div class="psychologist-rating">
-                    ★ 4.8 <span>· Profil contoh</span>
-                </div>
-
-                <div class="psychologist-footer">
-                    <div class="psychologist-price">
-                        Rp 175.000
-                        <small>per sesi</small>
-                    </div>
-
-                    <button class="small-button" type="button">
-                        Lihat Profil
-                    </button>
-                </div>
-            </article>
-
-            <article class="psychologist-card">
-                <div class="psychologist-profile">
-                    <div class="psychologist-avatar">RA</div>
-
-                    <div>
-                        <h3>Rina Amelia, M.Psi.</h3>
-                        <div class="psychologist-specialty">
-                            Kesehatan Mental
-                        </div>
-                    </div>
-                </div>
-
-                <div class="psychologist-rating">
-                    ★ 4.9 <span>· Profil contoh</span>
-                </div>
-
-                <div class="psychologist-footer">
-                    <div class="psychologist-price">
-                        Rp 160.000
-                        <small>per sesi</small>
-                    </div>
-
-                    <button class="small-button" type="button">
-                        Lihat Profil
-                    </button>
-                </div>
-            </article>
-
-        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </section>
+
 
 </div>
 

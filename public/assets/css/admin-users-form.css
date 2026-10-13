@@ -1,0 +1,99 @@
+
+/* ========================================
+   ADMIN USER FORM
+======================================== */
+
+.users-form {
+    width: 100%;
+}
+
+.users-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.users-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.users-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--purple-900);
+}
+
+.users-form-group input,
+.users-form-group select,
+.users-form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #ffffff;
+    color: #333333;
+    font: inherit;
+    font-size: 14px;
+}
+
+.users-form-group input:focus,
+.users-form-group select:focus,
+.users-form-group textarea:focus {
+    outline: 2px solid #c4a6fa;
+    outline-offset: 1px;
+    border-color: var(--purple-600);
+}
+
+.users-form-full {
+    grid-column: 1 / -1;
+}
+
+.users-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.users-alert-error,
+.users-alert-success {
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+.users-alert-error {
+    background: #fff0f0;
+    color: #a52a2a;
+    border: 1px solid #f5c5c5;
+}
+
+.users-alert-error ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+}
+
+.users-alert-success {
+    background: #e7f7ed;
+    color: #187442;
+    border: 1px solid #bce8cc;
+}
+
+@media (max-width: 768px) {
+    .users-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .users-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .users-form-actions a,
+    .users-form-actions button {
+        width: 100%;
+    }
+}
