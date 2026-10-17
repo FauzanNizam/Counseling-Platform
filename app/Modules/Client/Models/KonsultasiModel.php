@@ -6,9 +6,9 @@ use CodeIgniter\Model;
 
 class KonsultasiModel extends Model
 {
-    protected $table            = 'konsultasi';
-    protected $primaryKey       = 'id_konsultasi';
-    protected $returnType       = 'array';
+    protected $table = 'konsultasi';
+    protected $primaryKey = 'id_konsultasi';
+    protected $returnType = 'array';
     protected $useAutoIncrement = true;
 
     protected $allowedFields = [
@@ -23,12 +23,16 @@ class KonsultasiModel extends Model
         'status',
         'titik_jemput',
         'titik_tujuan',
+        'jemput_lat',
+        'jemput_lng',
+        'tujuan_lat',
+        'tujuan_lng',
         'link_meeting',
         'room_id',
         'platform',
     ];
 
     protected $useTimestamps = true;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 }
