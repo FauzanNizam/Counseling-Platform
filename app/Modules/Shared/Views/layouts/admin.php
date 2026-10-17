@@ -12,6 +12,12 @@ $isUsers = url_is('admin/users')
 $isConsultants = url_is('admin/consultants')
     || url_is('admin/consultants/*');
 
+$isConsultations = url_is('admin/consultations')
+    || url_is('admin/consultations/*');
+
+$isReports = url_is('admin/reports')
+    || url_is('admin/reports/*');
+
 
 // ==========================================
 // MENU SIDEBAR ADMIN
@@ -20,35 +26,33 @@ $isConsultants = url_is('admin/consultants')
 $menuItems = [
     [
         'label' => 'Dashboard',
-        'icon' => '⌂',
+        'icon' => 'bi bi-grid-1x2-fill',
         'url' => site_url('admin'),
         'active' => $isDashboard,
     ],
     [
         'label' => 'Manajemen Pengguna',
-        'icon' => '♧',
+        'icon' => 'bi bi-people-fill',
         'url' => site_url('admin/users'),
         'active' => $isUsers,
     ],
     [
         'label' => 'Data Psikolog',
-        'icon' => '✚',
+        'icon' => 'bi bi-person-badge-fill',
         'url' => site_url('admin/consultants'),
         'active' => $isConsultants,
     ],
     [
         'label' => 'Konsultasi',
-        'icon' => '▣',
+        'icon' => 'bi bi-chat-dots-fill',
         'url' => site_url('admin/consultations'),
-        'active' => url_is('admin/consultations')
-            || url_is('admin/consultations/*'),
+        'active' => $isConsultations,
     ],
     [
         'label' => 'Laporan',
-        'icon' => '▤',
+        'icon' => 'bi bi-file-earmark-bar-graph-fill',
         'url' => site_url('admin/reports'),
-        'active' => url_is('admin/reports')
-            || url_is('admin/reports/*'),
+        'active' => $isReports,
     ],
 ];
 
@@ -61,13 +65,13 @@ $mobileItems = [
     $menuItems[0],
     [
         'label' => 'Pengguna',
-        'icon' => '♧',
+        'icon' => 'bi bi-people-fill',
         'url' => site_url('admin/users'),
         'active' => $isUsers,
     ],
     [
         'label' => 'Psikolog',
-        'icon' => '✚',
+        'icon' => 'bi bi-person-badge-fill',
         'url' => site_url('admin/consultants'),
         'active' => $isConsultants,
     ],
@@ -104,79 +108,56 @@ $shared = [
         <?= esc($title ?? 'Admin - Counseling Platform') ?>
     </title>
 
-    <!-- ======================================
-         BOOTSTRAP CSS LOKAL
-         ====================================== -->
-
+    <!-- BOOTSTRAP CSS LOKAL -->
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
 
-    <!-- ======================================
-         CSS UTAMA DASHBOARD
-         ====================================== -->
+    <!-- BOOTSTRAP ICONS LOKAL -->
+    <link rel="stylesheet" href="<?= base_url('assets/bootstrap-icons/bootstrap-icons.css') ?>">
 
+    <!-- CSS UTAMA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 
+    <!-- CSS DASHBOARD -->
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css') ?>">
 
-    <!-- ======================================
-         CSS MANAJEMEN PENGGUNA
-         ====================================== -->
-
+    <!-- CSS MANAJEMEN PENGGUNA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-users.css') ?>">
 
-    <!-- ======================================
-         CSS FORM TAMBAH / EDIT PENGGUNA
-         ====================================== -->
-
+    <!-- CSS FORM PENGGUNA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-users-form.css') ?>">
 
-    <!-- ======================================
-         CSS POPUP GLOBAL
-         ====================================== -->
-
+    <!-- CSS POPUP GLOBAL -->
     <link rel="stylesheet" href="<?= base_url('assets/css/app-alerts.css') ?>">
 
-    <!-- ======================================
-         CSS DETAIL PENGGUNA
-         ====================================== -->
-
+    <!-- CSS DETAIL PENGGUNA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-users-detail.css') ?>">
 
-    <!-- ======================================
-         CSS MANAJEMEN KONSULTAN
-         ====================================== -->
-
+    <!-- CSS MANAJEMEN KONSULTAN -->
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-consultants.css') ?>">
+
+
+    <link rel="stylesheet" href="<?= base_url('assets/css/admin-reports.css') ?>">
+
 
 </head>
 
 <body>
 
-    <!-- ======================================
-         SIDEBAR ADMIN
-         ====================================== -->
-
+    <!-- SIDEBAR ADMIN -->
     <?= view(
         'Modules\Shared\Views\partials\workspace\sidebar',
         $shared
     ) ?>
 
 
-    <!-- ======================================
-         OVERLAY NAVIGASI MOBILE
-         ====================================== -->
-
+    <!-- OVERLAY NAVIGASI MOBILE -->
     <div class="nav-backdrop" id="navBackdrop"></div>
 
 
-    <!-- ======================================
-         KONTEN UTAMA
-         ====================================== -->
-
+    <!-- KONTEN UTAMA -->
     <main class="main">
 
         <!-- TOPBAR -->
-
         <?= view(
             'Modules\Shared\Views\partials\workspace\topbar',
             $shared
@@ -184,7 +165,6 @@ $shared = [
 
 
         <!-- KONTEN HALAMAN -->
-
         <section class="content">
 
             <?php
@@ -205,7 +185,6 @@ $shared = [
 
 
         <!-- FOOTER -->
-
         <?= view(
             'Modules\Shared\Views\partials\workspace\footer'
         ) ?>
@@ -213,46 +192,29 @@ $shared = [
     </main>
 
 
-    <!-- ======================================
-         NAVIGASI MOBILE
-         ====================================== -->
-
+    <!-- NAVIGASI MOBILE -->
     <?= view(
         'Modules\Shared\Views\partials\workspace\mobile_nav',
         $shared
     ) ?>
 
 
-    <!-- ======================================
-         MODAL POPUP GLOBAL
-         ====================================== -->
-
+    <!-- MODAL POPUP GLOBAL -->
     <?= view(
         'Modules\Shared\Views\partials\workspace\alert_modal'
     ) ?>
 
 
-    <!-- ======================================
-         JAVASCRIPT
-         ====================================== -->
-
-    <!-- Bootstrap JavaScript lokal -->
-
+    <!-- BOOTSTRAP JAVASCRIPT -->
     <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 
-
-    <!-- JavaScript popup global -->
-
+    <!-- JAVASCRIPT POPUP GLOBAL -->
     <script src="<?= base_url('assets/js/app-alert.js') ?>"></script>
 
-
-    <!-- JavaScript layout dashboard -->
-
+    <!-- JAVASCRIPT LAYOUT DASHBOARD -->
     <script src="<?= base_url('assets/js/dashboard-layout.js') ?>" defer></script>
 
-
-    <!-- JavaScript Manajemen Konsultan -->
-
+    <!-- JAVASCRIPT MANAJEMEN KONSULTAN -->
     <script src="<?= base_url('assets/js/admin-consultants.js') ?>" defer></script>
 
 </body>

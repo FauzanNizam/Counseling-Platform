@@ -3,9 +3,10 @@
 <?= $this->section('content') ?>
 
 <?php
-// ============================================
-// DATA STATISTIK
-// ============================================
+
+// ==========================================
+// DATA STATISTIK KONSULTASI
+// ==========================================
 
 $totalConsultations = (int) ($totalConsultations ?? 0);
 $completedConsultations = (int) ($completedConsultations ?? 0);
@@ -14,6 +15,11 @@ $cancelledConsultations = (int) ($cancelledConsultations ?? 0);
 $onlineConsultations = (int) ($onlineConsultations ?? 0);
 $pickupConsultations = (int) ($pickupConsultations ?? 0);
 
+
+// ==========================================
+// DATA STATISTIK PEMBAYARAN
+// ==========================================
+
 $totalTransactions = (int) ($totalTransactions ?? 0);
 $successfulTransactions = (int) ($successfulTransactions ?? 0);
 $pendingTransactions = (int) ($pendingTransactions ?? 0);
@@ -21,13 +27,19 @@ $failedTransactions = (int) ($failedTransactions ?? 0);
 
 $totalRevenue = (float) ($totalRevenue ?? 0);
 
+
+// ==========================================
+// DATA REKAP
+// ==========================================
+
 $consultationSummary = $consultationSummary ?? [];
 $sessionSummary = $sessionSummary ?? [];
 $paymentSummary = $paymentSummary ?? [];
 
-// ============================================
+
+// ==========================================
 // HELPER FORMAT
-// ============================================
+// ==========================================
 
 $formatNumber = static function ($value): string {
     return number_format((int) $value, 0, ',', '.');
@@ -42,10 +54,7 @@ $formatCurrency = static function ($value): string {
     );
 };
 
-$getPercentage = static function (
-    $value,
-    $total
-): float {
+$getPercentage = static function ($value, $total): float {
     if ((int) $total <= 0) {
         return 0;
     }
@@ -56,380 +65,352 @@ $getPercentage = static function (
     );
 };
 
-$getConsultationBadge = static function (
-    string $status
-): string {
-    switch ($status) {
-        case 'Selesai':
-            return 'bg-success-subtle text-success';
 
-        case 'Dibatalkan':
-            return 'bg-danger-subtle text-danger';
+// ==========================================
+// HELPER STATUS KONSULTASI
+// ==========================================
 
-        case 'Dikonfirmasi':
-            return 'bg-primary-subtle text-primary';
+$getConsultationBadge = static function (string $status): string {
+    switch (strtolower(trim($status))) {
+        case 'selesai':
+            return 'report-badge-success';
 
-        case 'Berlangsung':
-            return 'bg-info-subtle text-info';
+        case 'dibatalkan':
+            return 'report-badge-danger';
+
+        case 'dikonfirmasi':
+            return 'report-badge-purple';
+
+        case 'berlangsung':
+            return 'report-badge-info';
 
         default:
-            return 'bg-warning-subtle text-warning-emphasis';
+            return 'report-badge-warning';
     }
 };
 
-$getPaymentBadge = static function (
-    string $status
-): string {
-    switch ($status) {
-        case 'Sukses':
-            return 'bg-success-subtle text-success';
 
-        case 'Gagal':
-            return 'bg-danger-subtle text-danger';
+// ==========================================
+// HELPER STATUS PEMBAYARAN
+// ==========================================
 
-        case 'Refund':
-            return 'bg-info-subtle text-info';
+$getPaymentBadge = static function (string $status): string {
+    switch (strtolower(trim($status))) {
+        case 'sukses':
+            return 'report-badge-success';
+
+        case 'gagal':
+            return 'report-badge-danger';
+
+        case 'refund':
+            return 'report-badge-info';
 
         default:
-            return 'bg-warning-subtle text-warning-emphasis';
+            return 'report-badge-warning';
     }
 };
+
+$onlinePercentage = $getPercentage(
+    $onlineConsultations,
+    $totalConsultations
+);
+
+$pickupPercentage = $getPercentage(
+    $pickupConsultations,
+    $totalConsultations
+);
+
 ?>
 
-<!-- ============================================
-     HEADER
-============================================ -->
+<div class="admin-reports-page">
 
-<div class="dashboard-header mb-4">
+    <!-- =====================================
+         HEADER HALAMAN
+    ====================================== -->
 
-    <h1>Laporan Aktivitas Sistem</h1>
+    <div class="dashboard-header report-page-header">
+        <h1>Laporan Aktivitas Sistem</h1>
 
-    <p>
-        Ringkasan aktivitas konsultasi dan transaksi
-        pembayaran pada Counseling Platform.
-    </p>
+        <p>
+            Ringkasan aktivitas konsultasi dan transaksi
+            pembayaran pada Counseling Platform.
+        </p>
+    </div>
 
-</div>
 
-<!-- ============================================
-     STATISTIK KONSULTASI
-============================================ -->
+    <!-- =====================================
+         RINGKASAN KONSULTASI
+    ====================================== -->
 
-<div class="mb-3">
+    <div class="report-section-heading">
+        <h2>Ringkasan Konsultasi</h2>
+        <p>Statistik seluruh sesi konsultasi yang tercatat.</p>
+    </div>
 
-    <h2 class="h5 fw-bold mb-1">
-        Ringkasan Konsultasi
-    </h2>
+    <div class="report-stats-grid report-stats-three">
 
-    <p class="text-muted mb-0">
-        Statistik seluruh sesi konsultasi yang tercatat.
-    </p>
+        <!-- TOTAL KONSULTASI -->
+        <div class="report-stat-card">
 
-</div>
+            <div class="report-stat-icon">
+                <i class="bi bi-calendar-check" aria-hidden="true"></i>
+            </div>
 
-<div class="row g-3 mb-4">
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Total Konsultasi
+                </p>
 
-    <!-- TOTAL KONSULTASI -->
-    <div class="col-12 col-sm-6 col-xl-4">
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($totalConsultations) ?>
+                </h3>
 
-        <div class="management-card p-4 h-100">
+                <p class="report-stat-description">
+                    Semua sesi yang terdaftar
+                </p>
+            </div>
 
-            <div class="d-flex justify-content-between align-items-start">
+        </div>
 
-                <div>
-                    <p class="text-muted mb-2">
-                        Total Konsultasi
-                    </p>
 
-                    <h2 class="fw-bold mb-2">
-                        <?= $formatNumber($totalConsultations) ?>
-                    </h2>
+        <!-- KONSULTASI SELESAI -->
+        <div class="report-stat-card">
 
-                    <small class="text-muted">
-                        Semua sesi yang terdaftar
-                    </small>
-                </div>
+            <div class="report-stat-icon">
+                <i class="bi bi-check-circle" aria-hidden="true"></i>
+            </div>
 
-                <div class="rounded-3 bg-primary-subtle text-primary p-3">
-                    <i class="bi bi-calendar-check"></i>
-                    <span aria-hidden="true">▣</span>
-                </div>
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Konsultasi Selesai
+                </p>
 
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($completedConsultations) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    <?= $getPercentage(
+                        $completedConsultations,
+                        $totalConsultations
+                    ) ?>% dari total konsultasi
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- KONSULTASI DIBATALKAN -->
+        <div class="report-stat-card">
+
+            <div class="report-stat-icon">
+                <i class="bi bi-x-circle" aria-hidden="true"></i>
+            </div>
+
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Konsultasi Dibatalkan
+                </p>
+
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($cancelledConsultations) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    <?= $getPercentage(
+                        $cancelledConsultations,
+                        $totalConsultations
+                    ) ?>% dari total konsultasi
+                </p>
             </div>
 
         </div>
 
     </div>
 
-    <!-- KONSULTASI SELESAI -->
-    <div class="col-12 col-sm-6 col-xl-4">
 
-        <div class="management-card p-4 h-100">
+    <!-- =====================================
+         RINGKASAN PEMBAYARAN
+    ====================================== -->
 
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="report-section-heading">
+        <h2>Ringkasan Pembayaran</h2>
+        <p>Informasi transaksi pembayaran yang tercatat.</p>
+    </div>
 
-                <div>
-                    <p class="text-muted mb-2">
-                        Konsultasi Selesai
-                    </p>
+    <div class="report-stats-grid report-stats-four">
 
-                    <h2 class="fw-bold mb-2">
-                        <?= $formatNumber($completedConsultations) ?>
-                    </h2>
+        <!-- TOTAL PEMASUKAN -->
+        <div class="report-stat-card">
 
-                    <small class="text-success">
-                        <?= $getPercentage(
-                            $completedConsultations,
-                            $totalConsultations
-                        ) ?>% dari total konsultasi
-                    </small>
-                </div>
+            <div class="report-stat-icon">
+                <i class="bi bi-wallet2" aria-hidden="true"></i>
+            </div>
 
-                <div class="rounded-3 bg-success-subtle text-success p-3">
-                    <span aria-hidden="true">✓</span>
-                </div>
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Total Pemasukan
+                </p>
 
+                <h3 class="report-stat-value report-revenue-value">
+                    <?= $formatCurrency($totalRevenue) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    Nominal pembayaran sukses
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL TRANSAKSI -->
+        <div class="report-stat-card">
+
+            <div class="report-stat-icon">
+                <i class="bi bi-receipt" aria-hidden="true"></i>
+            </div>
+
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Total Transaksi
+                </p>
+
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($totalTransactions) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    Semua transaksi pembayaran
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- PEMBAYARAN BERHASIL -->
+        <div class="report-stat-card">
+
+            <div class="report-stat-icon">
+                <i class="bi bi-credit-card-2-front" aria-hidden="true"></i>
+            </div>
+
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Pembayaran Berhasil
+                </p>
+
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($successfulTransactions) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    Status pembayaran Sukses
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- PEMBAYARAN PENDING -->
+        <div class="report-stat-card">
+
+            <div class="report-stat-icon">
+                <i class="bi bi-clock-history" aria-hidden="true"></i>
+            </div>
+
+            <div class="report-stat-info">
+                <p class="report-stat-label">
+                    Pembayaran Pending
+                </p>
+
+                <h3 class="report-stat-value">
+                    <?= $formatNumber($pendingTransactions) ?>
+                </h3>
+
+                <p class="report-stat-description">
+                    Menunggu proses pembayaran
+                </p>
             </div>
 
         </div>
 
     </div>
 
-    <!-- KONSULTASI DIBATALKAN -->
-    <div class="col-12 col-sm-6 col-xl-4">
 
-        <div class="management-card p-4 h-100">
+    <!-- =====================================
+         REKAP JENIS SESI & STATUS KONSULTASI
+    ====================================== -->
 
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="report-content-grid">
 
-                <div>
-                    <p class="text-muted mb-2">
-                        Konsultasi Dibatalkan
-                    </p>
+        <!-- JENIS SESI -->
+        <div class="management-card report-content-card">
 
-                    <h2 class="fw-bold mb-2">
-                        <?= $formatNumber($cancelledConsultations) ?>
-                    </h2>
+            <div class="report-card-header">
+                <h2>
+                    <i class="bi bi-pie-chart" aria-hidden="true"></i>
+                    Jenis Sesi Konsultasi
+                </h2>
 
-                    <small class="text-danger">
-                        <?= $getPercentage(
-                            $cancelledConsultations,
-                            $totalConsultations
-                        ) ?>% dari total konsultasi
-                    </small>
-                </div>
-
-                <div class="rounded-3 bg-danger-subtle text-danger p-3">
-                    <span aria-hidden="true">✕</span>
-                </div>
-
+                <p>
+                    Perbandingan konsultasi Online dan Pick-up.
+                </p>
             </div>
 
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ============================================
-     STATISTIK PEMBAYARAN
-============================================ -->
-
-<div class="mb-3">
-
-    <h2 class="h5 fw-bold mb-1">
-        Ringkasan Pembayaran
-    </h2>
-
-    <p class="text-muted mb-0">
-        Informasi transaksi pembayaran yang tercatat.
-    </p>
-
-</div>
-
-<div class="row g-3 mb-4">
-
-    <!-- TOTAL PEMASUKAN -->
-    <div class="col-12 col-sm-6 col-xl-3">
-
-        <div class="management-card p-4 h-100">
-
-            <p class="text-muted mb-2">
-                Total Pemasukan
-            </p>
-
-            <h3 class="fw-bold mb-2 fs-4">
-                <?= $formatCurrency($totalRevenue) ?>
-            </h3>
-
-            <small class="text-muted">
-                Nominal pembayaran sukses
-            </small>
-
-        </div>
-
-    </div>
-
-    <!-- TOTAL TRANSAKSI -->
-    <div class="col-12 col-sm-6 col-xl-3">
-
-        <div class="management-card p-4 h-100">
-
-            <p class="text-muted mb-2">
-                Total Transaksi
-            </p>
-
-            <h3 class="fw-bold mb-2">
-                <?= $formatNumber($totalTransactions) ?>
-            </h3>
-
-            <small class="text-muted">
-                Semua transaksi pembayaran
-            </small>
-
-        </div>
-
-    </div>
-
-    <!-- PEMBAYARAN BERHASIL -->
-    <div class="col-12 col-sm-6 col-xl-3">
-
-        <div class="management-card p-4 h-100">
-
-            <p class="text-muted mb-2">
-                Pembayaran Berhasil
-            </p>
-
-            <h3 class="fw-bold mb-2 text-success">
-                <?= $formatNumber($successfulTransactions) ?>
-            </h3>
-
-            <small class="text-muted">
-                Status pembayaran Sukses
-            </small>
-
-        </div>
-
-    </div>
-
-    <!-- PEMBAYARAN PENDING -->
-    <div class="col-12 col-sm-6 col-xl-3">
-
-        <div class="management-card p-4 h-100">
-
-            <p class="text-muted mb-2">
-                Pembayaran Pending
-            </p>
-
-            <h3 class="fw-bold mb-2 text-warning">
-                <?= $formatNumber($pendingTransactions) ?>
-            </h3>
-
-            <small class="text-muted">
-                Menunggu proses pembayaran
-            </small>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ============================================
-     REKAP JENIS SESI
-============================================ -->
-
-<div class="row g-3 mb-4">
-
-    <div class="col-12 col-lg-6">
-
-        <div class="management-card p-4 h-100">
-
-            <h2 class="h5 fw-bold mb-2">
-                Jenis Sesi Konsultasi
-            </h2>
-
-            <p class="text-muted mb-4">
-                Perbandingan konsultasi Online dan Pick-up.
-            </p>
 
             <!-- ONLINE -->
-            <div class="mb-4">
+            <div class="report-progress-item">
 
-                <div class="d-flex justify-content-between mb-2">
+                <div class="report-progress-label">
+                    <span>Online</span>
 
-                    <span class="fw-semibold">
-                        Online
-                    </span>
-
-                    <span>
+                    <strong>
                         <?= $formatNumber($onlineConsultations) ?>
-                        (<?= $getPercentage(
-                            $onlineConsultations,
-                            $totalConsultations
-                        ) ?>%)
-                    </span>
-
+                        (<?= $onlinePercentage ?>%)
+                    </strong>
                 </div>
 
                 <div
-                    class="progress"
+                    class="report-progress-track"
                     role="progressbar"
                     aria-label="Konsultasi Online"
-                    aria-valuenow="<?= $getPercentage(
-                        $onlineConsultations,
-                        $totalConsultations
-                    ) ?>"
+                    aria-valuenow="<?= $onlinePercentage ?>"
                     aria-valuemin="0"
                     aria-valuemax="100"
                 >
                     <div
-                        class="progress-bar bg-primary"
-                        style="width: <?= $getPercentage(
-                            $onlineConsultations,
-                            $totalConsultations
-                        ) ?>%"
+                        class="report-progress-fill"
+                        style="width: <?= min(100, max(0, $onlinePercentage)) ?>%"
                     ></div>
                 </div>
 
             </div>
 
+
             <!-- PICK-UP -->
-            <div>
+            <div class="report-progress-item">
 
-                <div class="d-flex justify-content-between mb-2">
+                <div class="report-progress-label">
+                    <span>Pick-up</span>
 
-                    <span class="fw-semibold">
-                        Pick-up
-                    </span>
-
-                    <span>
+                    <strong>
                         <?= $formatNumber($pickupConsultations) ?>
-                        (<?= $getPercentage(
-                            $pickupConsultations,
-                            $totalConsultations
-                        ) ?>%)
-                    </span>
-
+                        (<?= $pickupPercentage ?>%)
+                    </strong>
                 </div>
 
                 <div
-                    class="progress"
+                    class="report-progress-track"
                     role="progressbar"
                     aria-label="Konsultasi Pick-up"
-                    aria-valuenow="<?= $getPercentage(
-                        $pickupConsultations,
-                        $totalConsultations
-                    ) ?>"
+                    aria-valuenow="<?= $pickupPercentage ?>"
                     aria-valuemin="0"
                     aria-valuemax="100"
                 >
                     <div
-                        class="progress-bar bg-info"
-                        style="width: <?= $getPercentage(
-                            $pickupConsultations,
-                            $totalConsultations
-                        ) ?>%"
+                        class="report-progress-fill report-progress-pickup"
+                        style="width: <?= min(100, max(0, $pickupPercentage)) ?>%"
                     ></div>
                 </div>
 
@@ -437,34 +418,32 @@ $getPaymentBadge = static function (
 
         </div>
 
-    </div>
 
-    <!-- RINGKASAN STATUS -->
-    <div class="col-12 col-lg-6">
+        <!-- STATUS KONSULTASI -->
+        <div class="management-card report-content-card">
 
-        <div class="management-card p-4 h-100">
+            <div class="report-card-header">
+                <h2>
+                    <i class="bi bi-clipboard-data" aria-hidden="true"></i>
+                    Status Konsultasi
+                </h2>
 
-            <h2 class="h5 fw-bold mb-2">
-                Status Konsultasi
-            </h2>
+                <p>
+                    Rekap jumlah konsultasi berdasarkan status.
+                </p>
+            </div>
 
-            <p class="text-muted mb-3">
-                Rekap jumlah konsultasi berdasarkan status.
-            </p>
-
-            <div class="table-responsive">
-
-                <table class="table align-middle mb-0">
+            <div class="report-table-wrapper">
+                <table class="report-table">
 
                     <thead>
                         <tr>
                             <th>Status</th>
-                            <th class="text-end">Jumlah</th>
+                            <th class="report-text-right">Jumlah</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
                         <?php if (!empty($consultationSummary)): ?>
 
                             <?php foreach ($consultationSummary as $item): ?>
@@ -480,22 +459,18 @@ $getPaymentBadge = static function (
                                 ?>
 
                                 <tr>
-
                                     <td>
-                                        <span
-                                            class="badge rounded-pill <?= esc(
-                                                $getConsultationBadge($status),
-                                                'attr'
-                                            ) ?> px-3 py-2"
-                                        >
+                                        <span class="report-badge <?= esc(
+                                            $getConsultationBadge($status),
+                                            'attr'
+                                        ) ?>">
                                             <?= esc($status) ?>
                                         </span>
                                     </td>
 
-                                    <td class="text-end fw-semibold">
+                                    <td class="report-text-right report-count">
                                         <?= $formatNumber($total) ?>
                                     </td>
-
                                 </tr>
 
                             <?php endforeach; ?>
@@ -503,155 +478,144 @@ $getPaymentBadge = static function (
                         <?php else: ?>
 
                             <tr>
-                                <td
-                                    colspan="2"
-                                    class="text-center text-muted py-4"
-                                >
+                                <td colspan="2" class="report-empty">
                                     Belum ada data konsultasi.
                                 </td>
                             </tr>
 
                         <?php endif; ?>
-
                     </tbody>
 
                 </table>
-
             </div>
 
         </div>
 
     </div>
 
-</div>
 
-<!-- ============================================
-     REKAP PEMBAYARAN
-============================================ -->
+    <!-- =====================================
+         REKAP STATUS PEMBAYARAN
+    ====================================== -->
 
-<div class="management-card p-4 mb-4">
+    <div class="management-card report-content-card report-payment-card">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+        <div class="report-card-header report-card-header-between">
 
-        <div>
+            <div>
+                <h2>
+                    <i class="bi bi-credit-card" aria-hidden="true"></i>
+                    Rekap Status Pembayaran
+                </h2>
 
-            <h2 class="h5 fw-bold mb-2">
-                Rekap Status Pembayaran
-            </h2>
+                <p>
+                    Jumlah transaksi berdasarkan status pembayaran.
+                </p>
+            </div>
 
-            <p class="text-muted mb-0">
-                Jumlah transaksi berdasarkan status pembayaran.
-            </p>
+            <div class="report-total-label">
+                Total:
+                <strong>
+                    <?= $formatNumber($totalTransactions) ?>
+                    transaksi
+                </strong>
+            </div>
 
         </div>
 
-        <div class="text-muted small">
-            Total:
-            <strong>
-                <?= $formatNumber($totalTransactions) ?>
-                transaksi
-            </strong>
-        </div>
 
-    </div>
+        <div class="report-table-wrapper">
+            <table class="report-table">
 
-    <div class="table-responsive">
+                <thead>
+                    <tr>
+                        <th>Status Pembayaran</th>
+                        <th class="report-text-right">Jumlah Transaksi</th>
+                        <th class="report-text-right">Persentase</th>
+                    </tr>
+                </thead>
 
-        <table class="table align-middle mb-0">
+                <tbody>
+                    <?php if (!empty($paymentSummary)): ?>
 
-            <thead>
-                <tr>
-                    <th>Status Pembayaran</th>
-                    <th class="text-end">Jumlah Transaksi</th>
-                    <th class="text-end">Persentase</th>
-                </tr>
-            </thead>
+                        <?php foreach ($paymentSummary as $item): ?>
 
-            <tbody>
+                            <?php
+                            $status = (string) (
+                                $item['status_bayar'] ?? '-'
+                            );
 
-                <?php if (!empty($paymentSummary)): ?>
+                            $total = (int) (
+                                $item['total'] ?? 0
+                            );
 
-                    <?php foreach ($paymentSummary as $item): ?>
+                            $percentage = $getPercentage(
+                                $total,
+                                $totalTransactions
+                            );
+                            ?>
 
-                        <?php
-                        $status = (string) (
-                            $item['status_bayar'] ?? '-'
-                        );
-
-                        $total = (int) (
-                            $item['total'] ?? 0
-                        );
-
-                        $percentage = $getPercentage(
-                            $total,
-                            $totalTransactions
-                        );
-                        ?>
-
-                        <tr>
-
-                            <td>
-                                <span
-                                    class="badge rounded-pill <?= esc(
+                            <tr>
+                                <td>
+                                    <span class="report-badge <?= esc(
                                         $getPaymentBadge($status),
                                         'attr'
-                                    ) ?> px-3 py-2"
-                                >
-                                    <?= esc($status) ?>
-                                </span>
-                            </td>
+                                    ) ?>">
+                                        <?= esc($status) ?>
+                                    </span>
+                                </td>
 
-                            <td class="text-end fw-semibold">
-                                <?= $formatNumber($total) ?>
-                            </td>
+                                <td class="report-text-right report-count">
+                                    <?= $formatNumber($total) ?>
+                                </td>
 
-                            <td class="text-end">
-                                <?= $percentage ?>%
-                            </td>
+                                <td class="report-text-right">
+                                    <?= $percentage ?>%
+                                </td>
+                            </tr>
 
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
+
+                        <tr>
+                            <td colspan="3" class="report-empty">
+                                Belum ada transaksi pembayaran.
+                            </td>
                         </tr>
 
-                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
 
-                <?php else: ?>
-
-                    <tr>
-                        <td
-                            colspan="3"
-                            class="text-center text-muted py-4"
-                        >
-                            Belum ada transaksi pembayaran.
-                        </td>
-                    </tr>
-
-                <?php endif; ?>
-
-            </tbody>
-
-        </table>
+            </table>
+        </div>
 
     </div>
 
-</div>
 
-<!-- ============================================
-     INFORMASI LAPORAN
-============================================ -->
+    <!-- =====================================
+         INFORMASI LAPORAN
+    ====================================== -->
 
-<div class="management-card p-4 mb-4">
+    <div class="management-card report-content-card report-info-card">
 
-    <h2 class="h5 fw-bold mb-2">
-        Informasi Laporan
-    </h2>
+        <div class="report-card-header">
+            <h2>
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                Informasi Laporan
+            </h2>
+        </div>
 
-    <p class="text-muted mb-0">
-        Laporan ini menampilkan ringkasan aktivitas
-        konsultasi dan pembayaran berdasarkan data
-        yang tersimpan di sistem. Informasi pribadi
-        seperti isi percakapan dan catatan konseling
-        tidak ditampilkan untuk menjaga kerahasiaan
-        data klien.
-    </p>
+        <p class="report-info-text">
+            Laporan ini menampilkan ringkasan aktivitas
+            konsultasi dan pembayaran berdasarkan data
+            yang tersimpan di sistem. Informasi pribadi
+            seperti isi percakapan dan catatan konseling
+            tidak ditampilkan untuk menjaga kerahasiaan
+            data klien.
+        </p>
+
+    </div>
 
 </div>
 
