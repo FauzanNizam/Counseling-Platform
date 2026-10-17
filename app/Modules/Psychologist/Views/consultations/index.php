@@ -1,4 +1,3 @@
-
 <?= $this->extend('Modules\Shared\Views\layouts\psychologist') ?>
 
 <?= $this->section('content') ?>
@@ -103,11 +102,11 @@ $error = session()->getFlashdata('error');
 
                         $statusClass = match ($status) {
                             'Menunggu Konfirmasi' => 'pending',
-                            'Dikonfirmasi'        => 'confirmed',
-                            'Berlangsung'        => 'ongoing',
-                            'Selesai'            => 'completed',
-                            'Dibatalkan'         => 'cancelled',
-                            default             => 'default',
+                            'Dikonfirmasi' => 'confirmed',
+                            'Berlangsung' => 'ongoing',
+                            'Selesai' => 'completed',
+                            'Dibatalkan' => 'cancelled',
+                            default => 'default',
                         };
 
                         // ==================================
@@ -128,12 +127,10 @@ $error = session()->getFlashdata('error');
                             );
                         }
 
-                        // Terima/Tolak hanya untuk permintaan
-                        // yang belum melewati waktu mulai.
-                        $canRespond =
-                            $status === 'Menunggu Konfirmasi'
-                            && $sessionStart !== false
-                            && $now < $sessionStart;
+                        // Psikolog dapat merespons permintaan
+                        // // selama status masih Menunggu Konfirmasi.
+
+                        $canRespond = $status === 'Menunggu Konfirmasi';
                         ?>
 
                         <tr>
@@ -189,13 +186,10 @@ $error = session()->getFlashdata('error');
                                 <div class="psy-actions">
 
                                     <!-- DETAIL SELALU MUNCUL -->
-                                    <a
-                                        href="<?= site_url(
-                                            'psychologist/consultations/' .
-                                            $consultationId
-                                        ) ?>"
-                                        class="psy-btn psy-btn--secondary"
-                                    >
+                                    <a href="<?= site_url(
+                                        'psychologist/consultations/' .
+                                        $consultationId
+                                    ) ?>" class="psy-btn psy-btn--secondary">
                                         Detail
                                     </a>
 
@@ -203,20 +197,14 @@ $error = session()->getFlashdata('error');
                                     <?php if ($canRespond): ?>
 
                                         <!-- TERIMA KONSULTASI -->
-                                        <form
-                                            action="<?= site_url(
-                                                'psychologist/consultations/' .
-                                                $consultationId .
-                                                '/confirm'
-                                            ) ?>"
-                                            method="post"
-                                        >
+                                        <form action="<?= site_url(
+                                            'psychologist/consultations/' .
+                                            $consultationId .
+                                            '/confirm'
+                                        ) ?>" method="post">
                                             <?= csrf_field() ?>
 
-                                            <button
-                                                type="submit"
-                                                class="psy-btn psy-btn--accept"
-                                            >
+                                            <button type="submit" class="psy-btn psy-btn--accept">
                                                 Terima
                                             </button>
 
@@ -224,22 +212,17 @@ $error = session()->getFlashdata('error');
 
 
                                         <!-- TOLAK: BUKA CUSTOM MODAL -->
-                                        <button
-                                            type="button"
-                                            class="psy-btn psy-btn--reject js-open-reject-modal"
-                                            data-action="<?= esc(
-                                                site_url(
-                                                    'psychologist/consultations/' .
-                                                    $consultationId .
-                                                    '/reject'
-                                                ),
-                                                'attr'
-                                            ) ?>"
-                                            data-client="<?= esc(
-                                                $clientName,
-                                                'attr'
-                                            ) ?>"
-                                        >
+                                        <button type="button" class="psy-btn psy-btn--reject js-open-reject-modal" data-action="<?= esc(
+                                            site_url(
+                                                'psychologist/consultations/' .
+                                                $consultationId .
+                                                '/reject'
+                                            ),
+                                            'attr'
+                                        ) ?>" data-client="<?= esc(
+                                             $clientName,
+                                             'attr'
+                                         ) ?>">
                                             Tolak
                                         </button>
 
@@ -268,20 +251,10 @@ $error = session()->getFlashdata('error');
      MODAL KONFIRMASI TOLAK KONSULTASI
 ========================================== -->
 
-<div
-    class="psy-modal"
-    id="psyRejectModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="psyRejectTitle"
-    aria-describedby="psyRejectDescription"
-    aria-hidden="true"
->
+<div class="psy-modal" id="psyRejectModal" role="dialog" aria-modal="true" aria-labelledby="psyRejectTitle"
+    aria-describedby="psyRejectDescription" aria-hidden="true">
     <!-- BACKDROP -->
-    <div
-        class="psy-modal__backdrop"
-        data-close-reject-modal
-    ></div>
+    <div class="psy-modal__backdrop" data-close-reject-modal></div>
 
     <!-- KONTEN MODAL -->
     <div class="psy-modal__dialog">
@@ -306,29 +279,18 @@ $error = session()->getFlashdata('error');
         </p>
 
         <!-- FORM PENOLAKAN -->
-        <form
-            id="psyRejectForm"
-            method="post"
-            action=""
-        >
+        <form id="psyRejectForm" method="post" action="">
             <?= csrf_field() ?>
 
             <div class="psy-modal__actions">
 
                 <!-- BATAL -->
-                <button
-                    type="button"
-                    class="psy-modal__cancel"
-                    data-close-reject-modal
-                >
+                <button type="button" class="psy-modal__cancel" data-close-reject-modal>
                     Batal
                 </button>
 
                 <!-- KONFIRMASI TOLAK -->
-                <button
-                    type="submit"
-                    class="psy-modal__confirm"
-                >
+                <button type="submit" class="psy-modal__confirm">
                     Ya, Tolak
                 </button>
 

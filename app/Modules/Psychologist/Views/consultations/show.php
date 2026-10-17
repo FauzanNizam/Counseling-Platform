@@ -87,9 +87,10 @@ if (
     );
 }
 
-$canRespond = $status === 'Menunggu Konfirmasi'
-    && $sessionStart !== false
-    && $now < $sessionStart;
+// Psikolog dapat merespons permintaan
+// selama status masih Menunggu Konfirmasi.
+
+$canRespond = $status === 'Menunggu Konfirmasi';
 
 $canStart = $status === 'Dikonfirmasi'
     && $sessionStart !== false
