@@ -13,12 +13,6 @@ use CodeIgniter\Router\RouteCollection;
 // HALAMAN UTAMA
 // ======================================================
 
-// MVC LAMA
-// $routes->get('/', 'Client\Dashboard::index', [
-//     'filter' => 'role:client',
-// ]);
-
-// HMVC
 $routes->get(
     '/',
     '\Modules\Client\Controllers\Dashboard::index',
@@ -30,14 +24,6 @@ $routes->get(
 // AUTH - LOGIN, REGISTER, LOGOUT
 // ======================================================
 
-// MVC LAMA
-// $routes->get('login', 'Auth\Login::index');
-// $routes->post('login', 'Auth\Login::authenticate');
-// $routes->get('register', 'Auth\Register::index');
-// $routes->post('register', 'Auth\Register::store');
-// $routes->post('logout', 'Auth\Login::logout');
-
-// HMVC
 $routes->get(
     'login',
     '\Modules\Auth\Controllers\Login::index'
@@ -68,13 +54,6 @@ $routes->post(
 // CLIENT MODULE
 // ======================================================
 
-// MVC LAMA
-// $routes->get('client', 'Client\Dashboard::index', [
-//     'filter' => 'role:client',
-// ]);
-
-// HMVC
-
 $routes->group(
     'client',
     [
@@ -82,62 +61,132 @@ $routes->group(
         'filter' => 'role:client',
     ],
     static function ($routes) {
-        // Dashboard Klien
+
+        // ==========================================
+        // DASHBOARD KLIEN
+        // ==========================================
+    
         $routes->get('/', 'Dashboard::index');
 
-        // Profil Pengguna
+
+        // ==========================================
+        // PROFIL KLIEN
+        // ==========================================
+    
         $routes->get('profile', 'Profile::index');
-        $routes->post('profile/update', 'Profile::update');
 
-        // Self-Assessment
+        $routes->post(
+            'profile/update',
+            'Profile::update'
+        );
 
-        // Self-Assessment
-        $routes->get('assessment', 'Assessment::index');
-        $routes->post('assessment/submit', 'Assessment::submit');
-        $routes->get('assessment/new', 'Assessment::create');
-        $routes->get('assessment/history', 'Assessment::history');
-        $routes->get('assessment/history/(:num)', 'Assessment::detail/$1');
 
-        // Konsultan
+        // ==========================================
+        // SELF-ASSESSMENT
+        // ==========================================
+    
+        $routes->get(
+            'assessment',
+            'Assessment::index'
+        );
 
-        $routes->get('konsultan', 'Konsultan::index');
-        $routes->get('konsultan/(:num)', 'Konsultan::detail/$1');
+        $routes->post(
+            'assessment/submit',
+            'Assessment::submit'
+        );
 
-        // Konsultasi
-        $routes->get('konsultasi/buat', 'Konsultasi::create');
-        $routes->post('konsultasi/simpan', 'Konsultasi::store');
-        $routes->get('konsultasi/buat/(:num)', 'Konsultasi::create/$1');
+        $routes->get(
+            'assessment/new',
+            'Assessment::create'
+        );
 
-        $routes->get('jadwal', 'Jadwal::index');
-        $routes->post('jadwal/batalkan/(:num)', 'Jadwal::batalkan/$1');
+        $routes->get(
+            'assessment/history',
+            'Assessment::history'
+        );
 
-        //pembayaran
-        $routes->get('pembayaran/(:num)', 'Pembayaran::index/$1');
+        $routes->get(
+            'assessment/history/(:num)',
+            'Assessment::detail/$1'
+        );
+
+
+        // ==========================================
+        // KONSULTAN
+        // ==========================================
+    
+        $routes->get(
+            'konsultan',
+            'Konsultan::index'
+        );
+
+        $routes->get(
+            'konsultan/(:num)',
+            'Konsultan::detail/$1'
+        );
+
+
+        // ==========================================
+        // KONSULTASI
+        // ==========================================
+    
+        $routes->get(
+            'konsultasi/buat',
+            'Konsultasi::create'
+        );
+
+        $routes->post(
+            'konsultasi/simpan',
+            'Konsultasi::store'
+        );
+
+        $routes->get(
+            'konsultasi/buat/(:num)',
+            'Konsultasi::create/$1'
+        );
+
+
+        // ==========================================
+        // JADWAL KLIEN
+        // ==========================================
+    
+        $routes->get(
+            'jadwal',
+            'Jadwal::index'
+        );
+
+        $routes->post(
+            'jadwal/batalkan/(:num)',
+            'Jadwal::batalkan/$1'
+        );
+
+
+        // ==========================================
+        // PEMBAYARAN
+        // ==========================================
+    
+        $routes->get(
+            'pembayaran/(:num)',
+            'Pembayaran::index/$1'
+        );
+
         $routes->post(
             'pembayaran/proses/(:num)',
             'Pembayaran::proses/$1'
         );
+
         $routes->post(
             'pembayaran/upload-bukti/(:num)',
             'Pembayaran::uploadBukti/$1'
         );
-        // Route Client lainnya ditambahkan di sini.
+
     }
 );
-
 
 
 // ======================================================
 // ADMIN MODULE
 // ======================================================
-
-// MVC LAMA
-// $routes->get('admin', 'Admin\Dashboard::index', [
-//     'filter' => 'role:admin',
-// ]);
-
-
-// HMVC
 
 $routes->group(
     'admin',
@@ -147,52 +196,127 @@ $routes->group(
     ],
     static function ($routes) {
 
-        // Dashboard Admin
+        // ==========================================
+        // DASHBOARD ADMIN
+        // ==========================================
+    
         $routes->get('/', 'Dashboard::index');
 
-        // F-21: READ
+
+        // ==========================================
+        // F-21: MANAJEMEN PENGGUNA
+        // ==========================================
+    
+        // READ
         $routes->get('users', 'Users::index');
 
-        // F-21: CREATE
-        $routes->get('users/create', 'Users::create');
-        $routes->post('users/store', 'Users::store');
+        // CREATE
+        $routes->get(
+            'users/create',
+            'Users::create'
+        );
 
-        // READ DETAIL - Detail Pengguna
-        $routes->get('users/(:num)', 'Users::show/$1');
+        $routes->post(
+            'users/store',
+            'Users::store'
+        );
 
-        // UPDATE - Edit Pengguna
-        $routes->get('users/(:num)/edit', 'Users::edit/$1');
-        $routes->post('users/(:num)/update', 'Users::update/$1');
+        // DETAIL
+        $routes->get(
+            'users/(:num)',
+            'Users::show/$1'
+        );
 
-        $routes->post('users/(:num)/delete', 'Users::delete/$1');
+        // EDIT
+        $routes->get(
+            'users/(:num)/edit',
+            'Users::edit/$1'
+        );
 
-        // =====================================
+        // UPDATE
+        $routes->post(
+            'users/(:num)/update',
+            'Users::update/$1'
+        );
+
+        // DELETE
+        $routes->post(
+            'users/(:num)/delete',
+            'Users::delete/$1'
+        );
+
+
+        // ==========================================
         // F-22: MANAJEMEN KONSULTAN
-        // =====================================
+        // ==========================================
+    
+        // READ
+        $routes->get(
+            'consultants',
+            'Consultants::index'
+        );
 
-        // Daftar konsultan
-        $routes->get('consultants', 'Consultants::index');
+        // CREATE
+        $routes->get(
+            'consultants/create',
+            'Consultants::create'
+        );
 
-        // Tambah konsultan
-        $routes->get('consultants/create', 'Consultants::create');
-        $routes->post('consultants/store', 'Consultants::store');
+        $routes->post(
+            'consultants/store',
+            'Consultants::store'
+        );
 
-        // Detail konsultan
-        $routes->get('consultants/(:num)', 'Consultants::show/$1');
+        // DETAIL
+        $routes->get(
+            'consultants/(:num)',
+            'Consultants::show/$1'
+        );
 
-        // Edit konsultan
-        $routes->get('consultants/(:num)/edit', 'Consultants::edit/$1');
-        $routes->post('consultants/(:num)/update', 'Consultants::update/$1');
+        // EDIT
+        $routes->get(
+            'consultants/(:num)/edit',
+            'Consultants::edit/$1'
+        );
 
-        // Verifikasi konsultan
-        $routes->post('consultants/(:num)/verify', 'Consultants::verify/$1');
+        // UPDATE
+        $routes->post(
+            'consultants/(:num)/update',
+            'Consultants::update/$1'
+        );
 
-        // Hapus konsultan
-        $routes->post('consultants/(:num)/delete', 'Consultants::delete/$1');
+        // VERIFIKASI
+        $routes->post(
+            'consultants/(:num)/verify',
+            'Consultants::verify/$1'
+        );
 
-        $routes->get('consultations', 'Consultations::index');
-        $routes->get('consultations/(:num)', 'Consultations::show/$1');
+        // DELETE
+        $routes->post(
+            'consultants/(:num)/delete',
+            'Consultants::delete/$1'
+        );
 
+
+        // ==========================================
+        // MANAJEMEN KONSULTASI
+        // ==========================================
+    
+        $routes->get(
+            'consultations',
+            'Consultations::index'
+        );
+
+        $routes->get(
+            'consultations/(:num)',
+            'Consultations::show/$1'
+        );
+
+
+        // ==========================================
+        // VERIFIKASI PEMBAYARAN
+        // ==========================================
+    
         $routes->post(
             'consultations/(:num)/payment/verify',
             'Consultations::verifyPayment/$1'
@@ -202,28 +326,30 @@ $routes->group(
             'consultations/(:num)/payment/reject',
             'Consultations::rejectPayment/$1'
         );
+
         $routes->get(
             'consultations/(:num)/payment/proof',
             'Consultations::paymentProof/$1'
         );
 
-        $routes->get('reports', 'Reports::index');
+
+        // ==========================================
+        // LAPORAN ADMIN
+        // ==========================================
+    
+        $routes->get(
+            'reports',
+            'Reports::index'
+        );
+
     }
 );
-
-
 
 
 // ======================================================
 // PSYCHOLOGIST MODULE
 // ======================================================
 
-// MVC LAMA
-// $routes->get('psychologist', 'Psychologist\Dashboard::index', [
-//     'filter' => 'role:psychologist',
-// ]);
-
-// HMVC
 $routes->group(
     'psychologist',
     [
@@ -231,10 +357,125 @@ $routes->group(
         'filter' => 'role:psychologist',
     ],
     static function ($routes) {
-        // Dashboard Psikolog
-        $routes->get('/', 'Dashboard::index');
 
-        // Tambahkan route Psikolog lainnya di sini.
+        // ==========================================
+        // DASHBOARD PSIKOLOG
+        // ==========================================
+    
+        $routes->get(
+            '/',
+            'Dashboard::index'
+        );
+
+
+        // ==========================================
+        // JADWAL KONSULTASI
+        // ==========================================
+    
+        // Daftar konsultasi
+        $routes->get(
+            'consultations',
+            'Consultations::index'
+        );
+
+        // Menerima konsultasi
+        $routes->post(
+            'consultations/(:num)/confirm',
+            'Consultations::confirm/$1'
+        );
+
+        // Menolak konsultasi
+        $routes->post(
+            'consultations/(:num)/reject',
+            'Consultations::reject/$1'
+        );
+
+
+        // Detail konsultasi
+        $routes->get(
+            'consultations/(:num)',
+            'Consultations::show/$1'
+        );
+
+        // Mulai sesi konsultasi
+        $routes->post(
+            'consultations/(:num)/start',
+            'Consultations::start/$1'
+        );
+
+        // Selesaikan sesi konsultasi
+        $routes->post(
+            'consultations/(:num)/finish',
+            'Consultations::finish/$1'
+        );
+
+        //JADWAL PRAKTEK PSIKOLOG
+    
+        $routes->get(
+            'practice-schedule',
+            'PracticeSchedule::index'
+        );
+
+        $routes->post(
+            'practice-schedule/store',
+            'PracticeSchedule::store'
+        );
+
+        $routes->post(
+            'practice-schedule/(:num)/update',
+            'PracticeSchedule::update/$1'
+        );
+
+        $routes->post(
+            'practice-schedule/(:num)/toggle',
+            'PracticeSchedule::toggle/$1'
+        );
+
+        // Tambah link meeting untuk konsultasi
+        $routes->post(
+            'consultations/(:num)/meeting',
+            'Consultations::saveMeeting/$1'
+        );
+
+        // buat halaman detail klien
+        $routes->get(
+            'clients',
+            '\Modules\Psychologist\Controllers\Clients::index'
+        );
+
+        $routes->get(
+            'clients/(:num)',
+            '\Modules\Psychologist\Controllers\Clients::show/$1'
+        );
+
+
+        // ==========================================
+        // PROFIL PSIKOLOG
+        // ==========================================
+    
+
+        $routes->get(
+            'profile',
+            '\Modules\Psychologist\Controllers\Profile::index'
+        );
+
+        $routes->post(
+            'profile/update',
+            '\Modules\Psychologist\Controllers\Profile::update'
+        );
+
+        $routes->post(
+            'profile/password',
+            '\Modules\Psychologist\Controllers\Profile::updatePassword'
+        );
+
+        // ==========================================
+        // FITUR SELANJUTNYA
+        // ==========================================
+    
+        // Klien dan Pesan akan ditambahkan
+        // setelah controller masing-masing dibuat.
+    
     }
 );
 
@@ -243,7 +484,7 @@ $routes->group(
 // SETUP ROUTES - NONAKTIF
 // ======================================================
 
-// Route setup akun dengan URL publik dinonaktifkan.
+// Route setup akun melalui URL publik dinonaktifkan.
 // Gunakan Seeder atau proses administrasi yang aman.
 
 // $routes->get('setup-admin', 'SetupAdmin::create');

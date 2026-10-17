@@ -137,6 +137,7 @@
     }
 }
 
+
 /* =========================================
    TOMBOL NAVIGASI MANAJEMEN PENGGUNA
 ========================================= */
@@ -165,15 +166,10 @@
     outline-offset: 3px;
 }
 
-.management-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
 
 /* ==========================================
    PERBAIKAN POSISI SIDEBAR ADMIN
-   ========================================== */
+========================================== */
 
 /* Mengurangi jarak menu dari sisi kiri sidebar */
 .sidebar .menu {
@@ -182,7 +178,7 @@
     margin-left: 0;
 }
 
-/* Menggeser ikon dan teks menu ke kiri */
+/* Mengatur posisi ikon dan teks menu */
 .sidebar .menu li a {
     padding-left: 14px;
     padding-right: 14px;
@@ -191,8 +187,8 @@
 
 /* Menyamakan lebar area ikon */
 .sidebar .menu-icon {
-    width: 20px;
-    min-width: 20px;
+    width: 24px;
+    min-width: 24px;
     text-align: center;
     flex-shrink: 0;
 }
@@ -205,16 +201,17 @@
 /* Khusus sidebar desktop */
 @media (min-width: 769px) {
     .sidebar .menu {
-        margin-left: 0px;
+        margin-left: 0;
     }
 }
 
 
 /* ==========================================
-   BOOTSTRAP ICONS - ADMIN NAVIGATION
+   BOOTSTRAP ICONS - SHARED NAVIGATION
+   CLIENT, ADMIN & PSYCHOLOGIST
 ========================================== */
 
-/* Ikon sidebar */
+/* Container ikon sidebar */
 .sidebar .nav-icon,
 .sidebar .menu-icon {
     display: inline-flex;
@@ -222,29 +219,92 @@
     justify-content: center;
     flex-shrink: 0;
     width: 24px;
+    min-width: 24px;
     height: 24px;
     font-size: 19px;
     line-height: 1;
 }
 
+/* Ikon Bootstrap pada sidebar */
+.sidebar .bi,
 .sidebar .nav-icon i,
 .sidebar .menu-icon i {
     font-size: inherit;
     line-height: 1;
+    color: inherit;
 }
 
-/* Ikon navigasi mobile */
+.sidebar .menu-icon .bi {
+    display: inline-block;
+    font-size: 19px;
+    line-height: 1;
+    color: inherit;
+}
+
+/* Jarak ikon dan teks sidebar */
+.sidebar .menu a,
+.sidebar .logout-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* ==========================================
+   BOOTSTRAP ICONS - MOBILE NAVIGATION
+========================================== */
+
+/* Container ikon mobile */
 .mobile-nav .nav-icon,
 .mobile-nav .menu-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
     font-size: 20px;
     line-height: 1;
 }
 
+/* Ikon Bootstrap mobile */
+.mobile-nav .bi,
 .mobile-nav .nav-icon i,
 .mobile-nav .menu-icon i {
     font-size: inherit;
     line-height: 1;
+    color: inherit;
+}
+
+.mobile-nav .nav-icon {
+    margin: 0 auto 5px;
+}
+
+.mobile-nav .nav-icon .bi {
+    display: inline-block;
+    font-size: 21px;
+    line-height: 1;
+    color: inherit;
+}
+
+/* Link navigasi mobile */
+.mobile-nav a {
+    text-decoration: none;
+    gap: 12px;
+}
+
+.mobile-nav a.active .nav-icon {
+    color: inherit;
+}
+
+
+/* ==========================================
+   RESPONSIVE - MOBILE ICONS
+========================================== */
+
+@media (max-width: 480px) {
+    .mobile-nav .nav-icon .bi {
+        font-size: 19px;
+    }
 }
