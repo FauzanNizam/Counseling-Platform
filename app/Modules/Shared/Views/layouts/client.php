@@ -442,7 +442,7 @@
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-name">Counseling</div>
+            <div class="brand-name">Ngobrol.in</div>
             <div class="brand-caption">Mental Health Platform</div>
         </div>
 
@@ -567,7 +567,7 @@
                 </button>
 
                 <div class="topbar-title">
-                    Counseling Platform
+                    Client Panel
                 </div>
 
             </div>

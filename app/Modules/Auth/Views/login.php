@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login - Counseling Platform</title>
+    <title>Login - Ngobrol.in</title>
 
     <style>
         :root {
@@ -491,7 +491,7 @@
 
             <div class="brand">
                 <div class="brand-logo">♡</div>
-                <div class="brand-name">Counseling</div>
+                <div class="brand-name">Ngobrol.in</div>
             </div>
 
             <div class="welcome-content">
@@ -533,7 +533,7 @@
             </div>
 
             <div class="left-footer">
-                © <?= date('Y') ?> Counseling Platform.
+                © <?= date('Y') ?> Ngobrol.in.
                 All rights reserved.
             </div>
 

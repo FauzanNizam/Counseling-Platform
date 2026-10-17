@@ -1,7 +1,25 @@
+
 <?php
-$name = session()->get('user_name') ?: $fallbackName;
-$initial = mb_strtoupper(mb_substr($name, 0, 1));
+$fallbackName = 'Pengguna';
+
+$sessionName = session()->get('user_name');
+$name = is_string($sessionName) && trim($sessionName) !== ''
+    ? trim($sessionName)
+    : $fallbackName;
+
+$role = session()->get('role');
+
+$roleLabel = match ($role) {
+    'admin' => 'Administrator',
+    'client' => 'Klien',
+    'psychologist' => 'Psikolog',
+    default => 'Pengguna',
+};
+
+$initial = mb_strtoupper(mb_substr($name, 0, 1, 'UTF-8'), 'UTF-8');
+$topbarTitle = $topbarTitle ?? 'Dashboard';
 ?>
+
 <header class="topbar">
     <div class="topbar-left">
         <button class="mobile-menu-button" id="menuButton" type="button" aria-label="Buka menu" aria-controls="sidebar"

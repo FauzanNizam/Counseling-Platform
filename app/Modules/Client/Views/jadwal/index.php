@@ -1,4 +1,3 @@
-
 <?= $this->extend('Modules\Shared\Views\layouts\client') ?>
 <?= $this->section('content') ?>
 
@@ -75,15 +74,148 @@ $errorMessage = session()->getFlashdata('error');
         right: -65px;
         width: 240px;
         height: 240px;
-        border: 38px solid rgba(255,255,255,.08);
+        border: 38px solid rgba(255, 255, 255, .08);
         border-radius: 50%;
         pointer-events: none;
     }
 
-    .jadwal-page .jadwal-header > * {
+    .jadwal-page .jadwal-header>* {
         position: relative;
         z-index: 1;
     }
+
+    /* ==========================================
+   MODAL KONFIRMASI PEMBATALAN
+========================================== */
+
+    .modal-batalkan {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-batalkan.is-active {
+        display: flex;
+    }
+
+    .modal-batalkan-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(25, 18, 40, 0.58);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-batalkan-dialog {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 420px;
+        padding: 32px 28px;
+        border: 1px solid #eee7f8;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(35, 18, 65, 0.22);
+        text-align: center;
+        animation: modalBatalkanMasuk 0.2s ease-out;
+    }
+
+    .modal-batalkan-icon {
+        display: grid;
+        place-items: center;
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        background: #fef2f2;
+        color: #dc2626;
+        font-size: 30px;
+    }
+
+    .modal-batalkan-dialog h2 {
+        margin: 0 0 10px;
+        color: #292436;
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+    .modal-batalkan-dialog p {
+        margin: 0;
+        color: #746e80;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .modal-batalkan-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 26px;
+    }
+
+    .modal-batalkan-actions button {
+        flex: 1;
+        min-height: 46px;
+        padding: 11px 14px;
+        border: 1px solid #e5e0ec;
+        border-radius: 10px;
+        background: #fff;
+        color: #514760;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .modal-batalkan-actions button:last-child {
+        border-color: #dc2626;
+        background: #dc2626;
+        color: #fff;
+    }
+
+    .modal-batalkan-actions button:first-child:hover {
+        background: #f8f5fc;
+    }
+
+    .modal-batalkan-actions button:last-child:hover {
+        border-color: #b91c1c;
+        background: #b91c1c;
+    }
+
+    body.modal-batalkan-terbuka {
+        overflow: hidden;
+    }
+
+    @keyframes modalBatalkanMasuk {
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @media (max-width: 420px) {
+        .modal-batalkan-dialog {
+            padding: 26px 20px;
+        }
+
+        .modal-batalkan-actions {
+            flex-direction: column-reverse;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .modal-batalkan-dialog {
+            animation: none;
+        }
+    }
+
 
     .jadwal-page .jadwal-label {
         display: inline-flex;
@@ -91,9 +223,9 @@ $errorMessage = session()->getFlashdata('error');
         gap: 8px;
         margin-bottom: 16px;
         padding: 7px 13px;
-        border: 1px solid rgba(255,255,255,.3);
+        border: 1px solid rgba(255, 255, 255, .3);
         border-radius: 30px;
-        background: rgba(255,255,255,.12);
+        background: rgba(255, 255, 255, .12);
         color: #fff;
         font-size: 13px;
         font-weight: 500;
@@ -173,7 +305,7 @@ $errorMessage = session()->getFlashdata('error');
         border: 1px solid var(--j-border);
         border-radius: 14px;
         background: #fff;
-        box-shadow: 0 3px 14px rgba(61,31,100,.025);
+        box-shadow: 0 3px 14px rgba(61, 31, 100, .025);
     }
 
     .jadwal-page .jadwal-summary-icon {
@@ -273,13 +405,13 @@ $errorMessage = session()->getFlashdata('error');
         border: 1px solid var(--j-border);
         border-radius: 15px;
         background: #fff;
-        box-shadow: 0 3px 14px rgba(61,31,100,.025);
+        box-shadow: 0 3px 14px rgba(61, 31, 100, .025);
         transition: border-color .2s, box-shadow .2s;
     }
 
     .jadwal-page .jadwal-card:hover {
         border-color: #d8bfff;
-        box-shadow: 0 8px 24px rgba(91,33,182,.05);
+        box-shadow: 0 8px 24px rgba(91, 33, 182, .05);
     }
 
     .jadwal-page .jadwal-card-header {
@@ -613,6 +745,7 @@ $errorMessage = session()->getFlashdata('error');
     }
 
     @media (prefers-reduced-motion: reduce) {
+
         .jadwal-page *,
         .jadwal-page *::before,
         .jadwal-page *::after {
@@ -760,8 +893,7 @@ $errorMessage = session()->getFlashdata('error');
 
         <a
             href="<?= site_url('client/konsultan') ?>"
-            class="jadwal-new-link"
-        >
+            class="jadwal-new-link">
             <i class="bi bi-plus-circle" aria-hidden="true"></i>
             Buat Janji Baru
         </a>
@@ -790,8 +922,7 @@ $errorMessage = session()->getFlashdata('error');
 
             <a
                 href="<?= site_url('client/konsultan') ?>"
-                class="jadwal-action"
-            >
+                class="jadwal-action">
                 <i class="bi bi-search" aria-hidden="true"></i>
                 Cari Psikolog
             </a>
@@ -809,70 +940,70 @@ $errorMessage = session()->getFlashdata('error');
             <?php foreach ($jadwalData as $item): ?>
 
                 <?php
-                    $namaKonsultan = $item['nama_konsultan'] ?? 'Konsultan';
-                    $status = $item['status'] ?? 'Tidak diketahui';
+                $namaKonsultan = $item['nama_konsultan'] ?? 'Konsultan';
+                $status = $item['status'] ?? 'Tidak diketahui';
 
-                    $tanggalRaw = $item['tanggal'] ?? '';
-                    $tanggalTimestamp = $tanggalRaw
-                        ? strtotime($tanggalRaw)
-                        : false;
+                $tanggalRaw = $item['tanggal'] ?? '';
+                $tanggalTimestamp = $tanggalRaw
+                    ? strtotime($tanggalRaw)
+                    : false;
 
-                    $tanggalTampil = $tanggalTimestamp !== false
-                        ? date('d M Y', $tanggalTimestamp)
-                        : '-';
+                $tanggalTampil = $tanggalTimestamp !== false
+                    ? date('d M Y', $tanggalTimestamp)
+                    : '-';
 
-                    $tanggalPesan = $tanggalTimestamp !== false
-                        ? date('d-m-Y', $tanggalTimestamp)
-                        : '-';
+                $tanggalPesan = $tanggalTimestamp !== false
+                    ? date('d-m-Y', $tanggalTimestamp)
+                    : '-';
 
-                    $waktuMulai = !empty($item['waktu_mulai'])
-                        ? substr($item['waktu_mulai'], 0, 5)
-                        : '-';
+                $waktuMulai = !empty($item['waktu_mulai'])
+                    ? substr($item['waktu_mulai'], 0, 5)
+                    : '-';
 
-                    $waktuSelesai = !empty($item['waktu_selesai'])
-                        ? substr($item['waktu_selesai'], 0, 5)
-                        : '-';
+                $waktuSelesai = !empty($item['waktu_selesai'])
+                    ? substr($item['waktu_selesai'], 0, 5)
+                    : '-';
 
-                    $inisial = function_exists('mb_substr')
-                        ? mb_substr($namaKonsultan, 0, 1, 'UTF-8')
-                        : substr($namaKonsultan, 0, 1);
+                $inisial = function_exists('mb_substr')
+                    ? mb_substr($namaKonsultan, 0, 1, 'UTF-8')
+                    : substr($namaKonsultan, 0, 1);
 
-                    $inisial = function_exists('mb_strtoupper')
-                        ? mb_strtoupper($inisial, 'UTF-8')
-                        : strtoupper($inisial);
+                $inisial = function_exists('mb_strtoupper')
+                    ? mb_strtoupper($inisial, 'UTF-8')
+                    : strtoupper($inisial);
 
-                    $statusClass = 'status-other';
-                    $statusIcon = 'bi-info-circle';
+                $statusClass = 'status-other';
+                $statusIcon = 'bi-info-circle';
 
-                    if ($status === 'Dikonfirmasi') {
-                        $statusClass = 'status-dikonfirmasi';
-                        $statusIcon = 'bi-check-circle';
-                    } elseif ($status === 'Dibatalkan') {
-                        $statusClass = 'status-dibatalkan';
-                        $statusIcon = 'bi-x-circle';
-                    } elseif ($status === 'Menunggu Konfirmasi') {
-                        $statusClass = '';
-                        $statusIcon = 'bi-hourglass-split';
-                    }
+                if ($status === 'Dikonfirmasi') {
+                    $statusClass = 'status-dikonfirmasi';
+                    $statusIcon = 'bi-check-circle';
+                } elseif ($status === 'Dibatalkan') {
+                    $statusClass = 'status-dibatalkan';
+                    $statusIcon = 'bi-x-circle';
+                } elseif ($status === 'Menunggu Konfirmasi') {
+                    $statusClass = '';
+                    $statusIcon = 'bi-hourglass-split';
+                }
 
-                    $nomorWhatsApp = preg_replace(
-                        '/\D/',
-                        '',
-                        (string) ($item['telepon_konsultan'] ?? '')
-                    );
+                $nomorWhatsApp = preg_replace(
+                    '/\D/',
+                    '',
+                    (string) ($item['telepon_konsultan'] ?? '')
+                );
 
-                    if (substr($nomorWhatsApp, 0, 1) === '0') {
-                        $nomorWhatsApp = '62' . substr($nomorWhatsApp, 1);
-                    }
+                if (substr($nomorWhatsApp, 0, 1) === '0') {
+                    $nomorWhatsApp = '62' . substr($nomorWhatsApp, 1);
+                }
 
-                    $pesanAwal = 'Halo ' . $namaKonsultan
-                        . ', saya klien Anda dari Counseling Platform.'
-                        . ' Saya ingin membahas jadwal konsultasi tanggal '
-                        . $tanggalPesan . '.';
+                $pesanAwal = 'Halo ' . $namaKonsultan
+                    . ', saya klien Anda dari Counseling Platform.'
+                    . ' Saya ingin membahas jadwal konsultasi tanggal '
+                    . $tanggalPesan . '.';
 
-                    $linkWhatsApp = 'https://wa.me/'
-                        . $nomorWhatsApp
-                        . '?text=' . rawurlencode($pesanAwal);
+                $linkWhatsApp = 'https://wa.me/'
+                    . $nomorWhatsApp
+                    . '?text=' . rawurlencode($pesanAwal);
                 ?>
 
                 <article class="jadwal-card">
@@ -885,8 +1016,7 @@ $errorMessage = session()->getFlashdata('error');
 
                             <div
                                 class="jadwal-consultant-avatar"
-                                aria-hidden="true"
-                            >
+                                aria-hidden="true">
                                 <?= esc($inisial) ?>
                             </div>
 
@@ -908,8 +1038,7 @@ $errorMessage = session()->getFlashdata('error');
 
                             <i
                                 class="bi <?= esc($statusIcon, 'attr') ?>"
-                                aria-hidden="true"
-                            ></i>
+                                aria-hidden="true"></i>
 
                             <?= esc($status) ?>
 
@@ -930,8 +1059,7 @@ $errorMessage = session()->getFlashdata('error');
                                 <div class="jadwal-info-icon">
                                     <i
                                         class="bi bi-calendar3"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                 </div>
 
                                 <div class="jadwal-info-content">
@@ -955,8 +1083,7 @@ $errorMessage = session()->getFlashdata('error');
                                 <div class="jadwal-info-icon">
                                     <i
                                         class="bi bi-calendar-week"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                 </div>
 
                                 <div class="jadwal-info-content">
@@ -980,8 +1107,7 @@ $errorMessage = session()->getFlashdata('error');
                                 <div class="jadwal-info-icon">
                                     <i
                                         class="bi bi-clock"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                 </div>
 
                                 <div class="jadwal-info-content">
@@ -1007,8 +1133,7 @@ $errorMessage = session()->getFlashdata('error');
                                 <div class="jadwal-info-icon">
                                     <i
                                         class="bi bi-chat-dots"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                 </div>
 
                                 <div class="jadwal-info-content">
@@ -1041,14 +1166,12 @@ $errorMessage = session()->getFlashdata('error');
 
                             <a
                                 href="<?= site_url(
-                                    'client/pembayaran/' . $item['id_konsultasi']
-                                ) ?>"
-                                class="jadwal-action"
-                            >
+                                            'client/pembayaran/' . $item['id_konsultasi']
+                                        ) ?>"
+                                class="jadwal-action">
                                 <i
                                     class="bi bi-credit-card"
-                                    aria-hidden="true"
-                                ></i>
+                                    aria-hidden="true"></i>
                                 Bayar Sekarang
                             </a>
 
@@ -1060,12 +1183,10 @@ $errorMessage = session()->getFlashdata('error');
                                     href="<?= esc($linkWhatsApp, 'attr') ?>"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="jadwal-action whatsapp"
-                                >
+                                    class="jadwal-action whatsapp">
                                     <i
                                         class="bi bi-whatsapp"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                     Chat via WhatsApp
                                 </a>
 
@@ -1079,22 +1200,19 @@ $errorMessage = session()->getFlashdata('error');
 
                             <form
                                 action="<?= site_url(
-                                    'client/jadwal/batalkan/' . $item['id_konsultasi']
-                                ) ?>"
+                                            'client/jadwal/batalkan/' . $item['id_konsultasi']
+                                        ) ?>"
                                 method="post"
-                                onsubmit="return confirm('Yakin ingin membatalkan pengajuan konseling ini?');"
-                            >
+                                class="form-batalkan-janji">
 
                                 <?= csrf_field() ?>
 
                                 <button
                                     type="submit"
-                                    class="jadwal-action cancel"
-                                >
+                                    class="jadwal-action cancel">
                                     <i
                                         class="bi bi-x-circle"
-                                        aria-hidden="true"
-                                    ></i>
+                                        aria-hidden="true"></i>
                                     Batalkan Janji
                                 </button>
 
@@ -1114,4 +1232,111 @@ $errorMessage = session()->getFlashdata('error');
 
 </div>
 
+
+<!-- Modal Konfirmasi Pembatalan -->
+<div class="modal-batalkan" id="modalBatalkan" aria-hidden="true">
+    <div class="modal-batalkan-overlay"></div>
+
+    <div
+        class="modal-batalkan-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="judulModalBatalkan"
+        aria-describedby="deskripsiModalBatalkan">
+        <div class="modal-batalkan-icon">
+            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+        </div>
+
+        <h2 id="judulModalBatalkan">Batalkan Janji?</h2>
+
+        <p id="deskripsiModalBatalkan">
+            Apakah kamu yakin ingin membatalkan pengajuan konseling ini?
+            Tindakan ini akan mengubah status janji konselingmu.
+        </p>
+
+        <div class="modal-batalkan-actions">
+            <button type="button" id="btnKembaliBatalkan">
+                Kembali
+            </button>
+
+            <button type="button" id="btnKonfirmasiBatalkan">
+                Ya, Batalkan Janji
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('modalBatalkan');
+        const tombolKembali = document.getElementById('btnKembaliBatalkan');
+        const tombolKonfirmasi = document.getElementById('btnKonfirmasiBatalkan');
+        const overlay = modal?.querySelector('.modal-batalkan-overlay');
+
+        if (!modal || !tombolKembali || !tombolKonfirmasi || !overlay) {
+            return;
+        }
+
+        let formAktif = null;
+        let tombolSebelumnya = null;
+
+        function bukaModal(form) {
+            formAktif = form;
+            tombolSebelumnya = document.activeElement;
+
+            modal.classList.add('is-active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-batalkan-terbuka');
+
+            tombolKembali.focus();
+        }
+
+        function tutupModal() {
+            modal.classList.remove('is-active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-batalkan-terbuka');
+
+            formAktif = null;
+
+            if (tombolSebelumnya) {
+                tombolSebelumnya.focus();
+            }
+        }
+
+        document.querySelectorAll('.form-batalkan-janji').forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (formAktif !== form) {
+                    event.preventDefault();
+                    bukaModal(form);
+                }
+            });
+        });
+
+        tombolKembali.addEventListener('click', tutupModal);
+        overlay.addEventListener('click', tutupModal);
+
+        tombolKonfirmasi.addEventListener('click', function() {
+            if (!formAktif) {
+                return;
+            }
+
+            const form = formAktif;
+            tombolKonfirmasi.disabled = true;
+
+            // Kirim form setelah klien mengonfirmasi.
+            HTMLFormElement.prototype.submit.call(form);
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.classList.contains('is-active')) {
+                tutupModal();
+            }
+        });
+    });
+</script>
+
 <?= $this->endSection() ?>
+
+
+
+

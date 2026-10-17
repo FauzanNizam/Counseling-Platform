@@ -256,7 +256,7 @@
 <body>
 
     <section class="register-left">
-        <div class="brand">CounselPlatform</div>
+        <div class="brand">Ngobrol.in</div>
 
         <h1>Mulai perjalananmu menuju diri yang lebih baik.</h1>
 

@@ -761,7 +761,7 @@ $latestAssessment = $historyData[0] ?? null;
         <?php if (!empty($historyData)): ?>
 
             <a
-                href="<?= site_url('client/assessment') ?>"
+                href="<?= site_url('client/assessment/new') ?>"
                 class="history-button"
             >
                 <i class="bi bi-plus-circle" aria-hidden="true"></i>

@@ -9,7 +9,7 @@
 
     <!-- BRAND -->
     <div class="brand">
-        <div class="brand-name">Counseling</div>
+        <div class="brand-name">Ngobrol.in</div>
 
         <div class="brand-caption">
             <?= esc($workspaceCaption) ?>
