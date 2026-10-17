@@ -1,0 +1,1132 @@
+
+/* =========================================================
+   PSYCHOLOGIST WORKSPACE
+   Jadwal Konsultasi, Detail, Actions & Confirmation Modal
+   ========================================================= */
+
+
+/* =========================================================
+   1. JADWAL KONSULTASI
+   ========================================================= */
+
+.psychologist-schedule {
+    padding: 30px 34px;
+}
+
+.psychologist-schedule__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.psychologist-schedule__header h2 {
+    margin: 0 0 8px;
+    color: #381878;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.psychologist-schedule__header p {
+    margin: 0;
+    color: #827a94;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.psychologist-schedule__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+    border-radius: 999px;
+    background: #f0e8ff;
+    color: #5722a6;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.psychologist-schedule__table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.psychologist-schedule__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.psychologist-schedule__table th {
+    padding: 16px 18px;
+    background: #f7f4fc;
+    color: #6f6681;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.psychologist-schedule__table th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.psychologist-schedule__table th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.psychologist-schedule__table td {
+    padding: 19px 18px;
+    color: #30283d;
+    font-size: 14px;
+    border-bottom: 1px solid #eeeaf4;
+    vertical-align: middle;
+}
+
+.psychologist-schedule__table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.psychologist-schedule__table tbody tr:hover {
+    background: #fcfaff;
+}
+
+.psychologist-schedule__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.psychologist-schedule__client {
+    font-weight: 600;
+}
+
+.psychologist-schedule__empty {
+    padding: 40px 24px;
+    text-align: center;
+    color: #827a94;
+    background: #faf8fd;
+    border: 1px dashed #e5dcf1;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   2. STATUS KONSULTASI
+   ========================================================= */
+
+.psychologist-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.psychologist-status--pending {
+    background: #fff3d6;
+    color: #996300;
+}
+
+.psychologist-status--confirmed {
+    background: #e5f5ec;
+    color: #18794e;
+}
+
+.psychologist-status--ongoing {
+    background: #e6f0ff;
+    color: #245eb4;
+}
+
+.psychologist-status--completed {
+    background: #f0e8ff;
+    color: #5722a6;
+}
+
+.psychologist-status--cancelled {
+    background: #fde9e9;
+    color: #b42318;
+}
+
+.psychologist-status--default {
+    background: #f0f0f0;
+    color: #555;
+}
+
+
+/* =========================================================
+   3. TOMBOL AKSI KONSULTASI
+   ========================================================= */
+
+.psy-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.psy-actions form {
+    margin: 0;
+}
+
+.psy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.psy-btn:hover {
+    text-decoration: none;
+}
+
+.psy-btn:active {
+    transform: translateY(1px);
+}
+
+.psy-btn:focus-visible {
+    outline: 3px solid #b99af2;
+    outline-offset: 2px;
+}
+
+.psy-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Tombol utama: Mulai Sesi / Gabung Meeting */
+
+.psy-btn--primary {
+    background: #5722a6;
+    color: #fff;
+}
+
+.psy-btn--primary:hover {
+    background: #421785;
+    color: #fff;
+}
+
+/* Tombol Detail / Kembali */
+
+.psy-btn--secondary {
+    background: #f0e8ff;
+    color: #5722a6;
+}
+
+.psy-btn--secondary:hover {
+    background: #e5d6ff;
+    color: #421785;
+}
+
+/* Tombol Terima / Selesaikan Sesi */
+
+.psy-btn--accept {
+    background: #e5f5ec;
+    color: #18794e;
+}
+
+.psy-btn--accept:hover {
+    background: #c8ead7;
+    color: #12613d;
+}
+
+/* Tombol Tolak */
+
+.psy-btn--reject {
+    background: #fde9e9;
+    color: #b42318;
+}
+
+.psy-btn--reject:hover {
+    background: #fad1d1;
+    color: #912018;
+}
+
+
+/* =========================================================
+   4. NOTIFIKASI
+   ========================================================= */
+
+.psy-alert {
+    padding: 13px 16px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.psy-alert--success {
+    background: #e5f5ec;
+    color: #18794e;
+    border: 1px solid #c8ead7;
+}
+
+.psy-alert--error {
+    background: #fde9e9;
+    color: #b42318;
+    border: 1px solid #fad1d1;
+}
+
+.psy-muted {
+    color: #999;
+}
+
+
+/* =========================================================
+   5. DETAIL KONSULTASI
+   ========================================================= */
+
+.psy-detail {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ece7f3;
+    border-radius: 20px;
+    padding: 34px;
+    box-shadow: 0 4px 18px rgba(45, 20, 90, 0.03);
+}
+
+.psy-detail__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.psy-detail__top h2 {
+    color: #381878;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 8px;
+}
+
+.psy-detail__top p {
+    color: #827a94;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.psy-detail__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.psy-detail__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 20px;
+    background: #faf8fd;
+    border: 1px solid #f0ebf7;
+    border-radius: 12px;
+}
+
+.psy-detail__item span {
+    color: #827a94;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.psy-detail__item strong {
+    color: #30283d;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   6. VIDEO CALL / INFORMASI PICK-UP
+   ========================================================= */
+
+.psy-detail__meeting {
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px solid #e9def9;
+    border-radius: 14px;
+    background: #f5efff;
+}
+
+.psy-detail__meeting h3 {
+    margin: 0 0 10px;
+    color: #381878;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.psy-detail__meeting p {
+    margin: 0 0 18px;
+    color: #716681;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.psy-detail__meeting p:last-child {
+    margin-bottom: 0;
+}
+
+.psy-detail__meeting .psy-detail__grid {
+    margin-top: 16px;
+}
+
+.psy-detail__meeting .psy-detail__item {
+    background: #fff;
+    border-color: #e8def6;
+}
+
+.psy-detail__meeting .psy-btn {
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   7. INFORMASI STATUS SESI
+   ========================================================= */
+
+.psy-detail__info {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #f5f0ff;
+    border-left: 4px solid #6d28d9;
+    border-radius: 10px;
+}
+
+.psy-detail__info:empty {
+    display: none;
+}
+
+.psy-detail__info p {
+    margin: 0;
+    color: #563d78;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   8. TOMBOL AKSI DETAIL KONSULTASI
+   ========================================================= */
+
+.psy-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #eeeaf4;
+}
+
+.psy-detail__actions form {
+    margin: 0;
+}
+
+.psy-detail__actions .psy-btn {
+    min-height: 43px;
+    padding: 11px 18px;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   9. MODAL KONFIRMASI
+   Dipakai untuk:
+   - Tolak Konsultasi
+   - Mulai Sesi
+   - Selesaikan Sesi
+   ========================================================= */
+
+.psy-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.psy-modal.is-open {
+    display: flex;
+}
+
+.psy-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 17, 30, 0.58);
+}
+
+.psy-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 600px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 50px 40px 42px;
+    border-radius: 24px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 24px 70px rgba(20, 10, 40, 0.18);
+}
+
+.psy-modal__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 28px;
+    border: 5px solid #ffc99f;
+    border-radius: 50%;
+    color: #ffa65f;
+    font-size: 65px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.psy-modal__dialog h2 {
+    margin: 0 0 18px;
+    color: #381878;
+    font-size: 29px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.psy-modal__dialog p {
+    margin: 0 auto 34px;
+    max-width: 470px;
+    color: #827a94;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.psy-modal__dialog p strong {
+    color: #381878;
+    font-weight: 600;
+}
+
+.psy-modal__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+}
+
+.psy-modal__actions button {
+    min-width: 155px;
+    min-height: 48px;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.psy-modal__actions button:active {
+    transform: translateY(1px);
+}
+
+.psy-modal__actions button:focus-visible {
+    outline: 3px solid #b99af2;
+    outline-offset: 3px;
+}
+
+/* Tombol Batal */
+
+.psy-modal__cancel {
+    background: #928b9e;
+    color: #fff;
+}
+
+.psy-modal__cancel:hover {
+    background: #7b7388;
+}
+
+/* Tombol Konfirmasi */
+
+.psy-modal__confirm {
+    background: #6d28d9;
+    color: #fff;
+}
+
+.psy-modal__confirm:hover {
+    background: #5722b0;
+}
+
+body.psy-modal-open {
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   10. RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 992px) {
+    .psychologist-schedule {
+        padding: 26px 24px;
+    }
+
+    .psy-detail {
+        padding: 28px;
+    }
+
+    .psychologist-schedule__table th,
+    .psychologist-schedule__table td {
+        padding: 15px 12px;
+    }
+}
+
+
+/* =========================================================
+   11. RESPONSIVE MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .psychologist-schedule {
+        padding: 22px 18px;
+    }
+
+    .psychologist-schedule__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .psychologist-schedule__header h2 {
+        font-size: 20px;
+    }
+
+    .psychologist-schedule__table {
+        min-width: 700px;
+    }
+
+    .psy-detail {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .psy-detail__grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .psy-detail__top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .psy-detail__top h2 {
+        font-size: 21px;
+    }
+
+    .psy-detail__item {
+        padding: 16px;
+    }
+
+    .psy-detail__meeting {
+        padding: 18px;
+    }
+
+    .psy-detail__actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .psy-detail__actions form,
+    .psy-detail__actions .psy-btn {
+        width: 100%;
+    }
+
+    .psy-modal__dialog {
+        padding: 35px 22px;
+    }
+
+    .psy-modal__icon {
+        width: 80px;
+        height: 80px;
+        font-size: 52px;
+        margin-bottom: 22px;
+    }
+
+    .psy-modal__dialog h2 {
+        font-size: 23px;
+    }
+
+    .psy-modal__dialog p {
+        font-size: 15px;
+    }
+
+    .psy-modal__actions {
+        flex-direction: column;
+    }
+
+    .psy-modal__actions button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   12. RESPONSIVE MOBILE KECIL
+   ========================================================= */
+
+@media (max-width: 420px) {
+    .psychologist-schedule {
+        padding: 18px 14px;
+    }
+
+    .psychologist-schedule__header h2 {
+        font-size: 19px;
+    }
+
+    .psy-detail {
+        padding: 18px 14px;
+    }
+
+    .psy-detail__top h2 {
+        font-size: 19px;
+    }
+
+    .psy-detail__item strong {
+        font-size: 14px;
+    }
+
+    .psy-modal {
+        padding: 12px;
+    }
+
+    .psy-modal__dialog {
+        padding: 30px 18px;
+        border-radius: 18px;
+    }
+
+    .psy-modal__dialog h2 {
+        font-size: 21px;
+    }
+
+    .psy-modal__actions button {
+        min-width: 0;
+    }
+}
+
+
+/* =========================================================
+   13. KELOLA JADWAL PRAKTIK PSIKOLOG
+   ========================================================= */
+
+.psy-practice {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.psy-practice__card {
+    padding: 30px 34px;
+    background: #fff;
+    border: 1px solid #ece7f3;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(45, 20, 90, 0.03);
+}
+
+.psy-practice__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.psy-practice__heading h2 {
+    margin: 0 0 8px;
+    color: #381878;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.psy-practice__heading p {
+    margin: 0;
+    color: #827a94;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.psy-practice__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.psy-practice__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.psy-practice__field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.psy-practice__field label {
+    color: #30283d;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.psy-practice__field input,
+.psy-practice__field select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid #ded7e9;
+    border-radius: 10px;
+    background: #fff;
+    color: #30283d;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.psy-practice__field input:focus,
+.psy-practice__field select:focus {
+    border-color: #6d28d9;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+}
+
+.psy-practice__form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.psy-practice__form-footer p {
+    margin: 0;
+    color: #827a94;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.psy-practice__form-footer .psy-btn {
+    min-height: 44px;
+    padding: 11px 20px;
+}
+
+.psy-practice__table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.psy-practice__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.psy-practice__table th {
+    padding: 16px 18px;
+    background: #f7f4fc;
+    color: #6f6681;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.psy-practice__table td {
+    padding: 18px;
+    border-bottom: 1px solid #eeeaf4;
+    color: #30283d;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.psy-practice__table tbody tr:hover {
+    background: #fcfaff;
+}
+
+.psy-practice__day {
+    font-weight: 700;
+}
+
+.psy-practice__status {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.psy-practice__status.is-active {
+    background: #e5f5ec;
+    color: #18794e;
+}
+
+.psy-practice__status.is-inactive {
+    background: #f0edf4;
+    color: #766d83;
+}
+
+/* =========================================================
+   14. MODAL EDIT JADWAL PRAKTIK
+   ========================================================= */
+
+.psy-practice-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.psy-practice-modal.is-open {
+    display: flex;
+}
+
+.psy-practice-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 17, 30, 0.58);
+}
+
+.psy-practice-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 34px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 24px 70px rgba(20, 10, 40, 0.18);
+}
+
+.psy-practice-modal__dialog h2 {
+    margin: 0 0 8px;
+    color: #381878;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.psy-practice-modal__dialog > p {
+    margin: 0 0 26px;
+    color: #827a94;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.psy-practice-modal__dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.psy-practice-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.psy-practice-modal__actions .psy-btn {
+    min-height: 44px;
+    padding: 11px 18px;
+}
+
+@media (max-width: 768px) {
+    .psy-practice__card {
+        padding: 22px 18px;
+    }
+
+    .psy-practice__heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .psy-practice__fields {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .psy-practice__form-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .psy-practice__form-footer .psy-btn {
+        width: 100%;
+    }
+
+    .psy-practice__table {
+        min-width: 620px;
+    }
+
+    .psy-practice-modal__dialog {
+        padding: 24px 18px;
+    }
+
+    .psy-practice-modal__actions {
+        flex-direction: column;
+    }
+
+    .psy-practice-modal__actions .psy-btn {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   15. AKSES KONSULTASI ONLINE
+   ========================================================= */
+
+.psy-meeting-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.psy-meeting-form .psy-practice__field {
+    width: 100%;
+}
+
+.psy-meeting-form__actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 4px;
+}
+
+.psy-meeting-form__actions .psy-btn {
+    min-height: 44px;
+    padding: 11px 20px;
+}
+
+.psy-meeting-saved {
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #c8ead7;
+    border-radius: 12px;
+    background: #f1faf5;
+}
+
+.psy-meeting-saved > strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #18794e;
+    font-size: 15px;
+}
+
+.psy-meeting-saved > p {
+    margin: 0 0 16px;
+    color: #47725a;
+    font-size: 13px;
+}
+
+.psy-meeting-saved__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.psy-meeting-copy-feedback {
+    display: block;
+    margin-top: 12px;
+    color: #18794e;
+    font-size: 13px;
+}
+
+.psy-meeting-copy-feedback:empty {
+    display: none;
+}
+
+/* =========================================================
+   16. WHATSAPP KLIEN
+   ========================================================= */
+
+.psy-contact {
+    background: #f5fbf7;
+    border-color: #d7eee0;
+}
+
+.psy-contact h3 {
+    color: #18794e;
+}
+
+.psy-contact .psy-btn--accept {
+    background: #18794e;
+    color: #fff;
+}
+
+.psy-contact .psy-btn--accept:hover {
+    background: #12613d;
+    color: #fff;
+}
+
+/* =========================================================
+   17. RESPONSIVE AKSES KONSULTASI
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .psy-meeting-form__actions,
+    .psy-meeting-saved__actions {
+        flex-direction: column;
+    }
+
+    .psy-meeting-form__actions .psy-btn,
+    .psy-meeting-saved__actions .psy-btn,
+    .psy-contact .psy-btn {
+        width: 100%;
+    }
+}
+
