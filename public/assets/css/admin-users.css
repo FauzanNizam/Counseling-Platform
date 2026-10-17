@@ -1,0 +1,447 @@
+
+/* ========================================
+   ADMIN - USER MANAGEMENT
+======================================== */
+
+.users-panel {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+
+/* ========================================
+   HEADER PANEL
+======================================== */
+
+.users-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.users-panel-header h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--purple-900);
+}
+
+.users-panel-header span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+
+/* ========================================
+   SEARCH & FILTER
+======================================== */
+
+.users-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.users-filters input,
+.users-filters select {
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #ffffff;
+    color: #374151;
+    font-size: 14px;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.users-filters input {
+    flex: 2 1 220px;
+    min-width: 0;
+}
+
+.users-filters select {
+    flex: 1 1 150px;
+    min-width: 0;
+}
+
+.users-filters input:focus,
+.users-filters select:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+}
+
+
+/* ========================================
+   FILTER BUTTONS
+======================================== */
+
+.users-filter-button,
+.users-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+/* Tombol tambah pengguna dan filter */
+.users-filter-button {
+    background: var(--purple-600);
+    color: #ffffff;
+}
+
+.users-filter-button:hover {
+    background: #5b21b6;
+    color: #ffffff;
+}
+
+/* Tombol reset */
+.users-reset-button {
+    background: #f3f0fa;
+    color: var(--purple-900);
+}
+
+.users-reset-button:hover {
+    background: #e9e1f8;
+    color: var(--purple-900);
+}
+
+/* Bootstrap Icons pada tombol */
+.users-filter-button .bi,
+.users-reset-button .bi {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Aksesibilitas keyboard */
+.users-filter-button:focus-visible,
+.users-reset-button:focus-visible {
+    outline: 3px solid #c4b5fd;
+    outline-offset: 2px;
+}
+
+
+/* ========================================
+   TABLE WRAPPER
+======================================== */
+
+.users-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* ========================================
+   USERS TABLE
+======================================== */
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.users-table th {
+    background: #f8f6fc;
+    color: var(--purple-900);
+    font-weight: 600;
+}
+
+.users-table td {
+    color: #424242;
+}
+
+.users-table tbody tr:hover {
+    background: #faf9fd;
+}
+
+
+/* ========================================
+   USER STATUS BADGES
+======================================== */
+
+.users-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Status aktif */
+.users-status-aktif {
+    background: #e7f7ed;
+    color: #187442;
+}
+
+/* Status nonaktif */
+.users-status-nonaktif {
+    background: #f1f1f1;
+    color: #666666;
+}
+
+/* Status ditangguhkan */
+.users-status-ditangguhkan {
+    background: #fff0df;
+    color: #a45c08;
+}
+
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.users-empty {
+    padding: 28px !important;
+    text-align: center;
+    color: var(--muted) !important;
+}
+
+
+/* ========================================
+   ACTION BUTTONS
+======================================== */
+
+.users-action-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+
+/* Tombol Detail, Edit, Hapus */
+.users-action-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 6px 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+/* Ikon pada tombol aksi */
+.users-action-buttons .btn .bi {
+    display: inline-block;
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1;
+}
+
+
+/* ========================================
+   DETAIL BUTTON
+======================================== */
+
+.users-action-buttons .btn-outline-primary {
+    color: #6d28d9;
+    border-color: #6d28d9;
+    background: transparent;
+}
+
+.users-action-buttons .btn-outline-primary:hover {
+    background-color: #6d28d9;
+    border-color: #6d28d9;
+    color: #ffffff;
+}
+
+
+/* ========================================
+   EDIT BUTTON
+======================================== */
+
+.users-action-buttons .btn-outline-secondary {
+    color: #64748b;
+    border-color: #cbd5e1;
+    background: transparent;
+}
+
+.users-action-buttons .btn-outline-secondary:hover {
+    background-color: #64748b;
+    border-color: #64748b;
+    color: #ffffff;
+}
+
+
+/* ========================================
+   DELETE BUTTON
+======================================== */
+
+.users-delete-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+.users-action-buttons .btn-outline-danger {
+    color: #dc2626;
+    border-color: #dc2626;
+    background: transparent;
+}
+
+.users-action-buttons .btn-outline-danger:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+.users-action-buttons .btn-outline-danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ========================================
+   PAGINATION
+======================================== */
+
+.users-pagination {
+    margin-top: 24px;
+}
+
+
+/* ========================================
+   RESPONSIVE - TABLET
+======================================== */
+
+@media (max-width: 992px) {
+
+    .users-panel {
+        padding: 20px;
+    }
+
+    .users-panel-header {
+        gap: 16px;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 12px 10px;
+    }
+
+}
+
+
+/* ========================================
+   RESPONSIVE - MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .users-panel {
+        padding: 16px;
+    }
+
+    .users-panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .users-panel-header .users-filter-button {
+        width: 100%;
+    }
+
+    .users-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .users-filters input,
+    .users-filters select {
+        flex: none;
+        width: 100%;
+    }
+
+    .users-filters .users-filter-button,
+    .users-filters .users-reset-button {
+        width: 100%;
+    }
+
+    .users-table {
+        font-size: 13px;
+    }
+
+    .users-action-buttons {
+        gap: 6px;
+    }
+
+    .users-action-buttons .btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .users-action-buttons .btn .bi {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ========================================
+   RESPONSIVE - SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .users-panel {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .users-panel-header h2 {
+        font-size: 17px;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 11px 9px;
+    }
+
+}

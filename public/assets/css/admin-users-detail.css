@@ -1,0 +1,142 @@
+
+/* ========================================
+   ADMIN - DETAIL PENGGUNA
+======================================== */
+
+.user-detail-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #faf8ff;
+}
+
+.user-detail-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #6d28d9;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.user-detail-identity h3 {
+    margin: 0 0 6px;
+    color: var(--purple-900);
+    font-size: 21px;
+}
+
+.user-detail-identity p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.user-detail-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.user-detail-role,
+.user-detail-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.user-detail-role {
+    background: #eee5ff;
+    color: #6d28d9;
+}
+
+.user-detail-status.status-aktif {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.user-detail-status.status-nonaktif {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.user-detail-status.status-ditangguhkan {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.user-detail-section {
+    margin-top: 28px;
+}
+
+.user-detail-section h3 {
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--purple-900);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.user-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.user-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.user-detail-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.user-detail-item strong {
+    color: var(--purple-900);
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.user-detail-full {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+    .user-detail-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-detail-badges {
+        justify-content: center;
+    }
+
+    .user-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-detail-full {
+        grid-column: auto;
+    }
+}
