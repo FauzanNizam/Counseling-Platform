@@ -1,6 +1,5 @@
 
 <?= $this->extend('Modules\Shared\Views\layouts\psychologist') ?>
-
 <?= $this->section('content') ?>
 
 <?php
@@ -13,6 +12,27 @@ $consultationId = (int) ($consultation['id_konsultasi'] ?? 0);
 $status = $consultation['status'] ?? '-';
 $tipeSesi = $consultation['tipe_sesi'] ?? '-';
 $clientName = $consultation['nama_klien'] ?? 'Klien';
+
+// ==========================================
+// NAVIGASI KEMBALI
+// ==========================================
+
+$backUrl = site_url('psychologist/consultations');
+
+$from = (string) service('request')->getGet('from');
+$clientIdFromUrl = (int) service('request')->getGet('client_id');
+
+$fromClient = (
+    $from === 'client'
+    && $clientIdFromUrl > 0
+    && $clientIdFromUrl === (int) ($consultation['id_klien'] ?? 0)
+);
+
+if ($fromClient) {
+    $backUrl = site_url(
+        'psychologist/clients/' . $clientIdFromUrl
+    );
+}
 
 $statusClass = match ($status) {
     'Menunggu Konfirmasi' => 'pending',
@@ -690,10 +710,10 @@ $error = session()->getFlashdata('error');
 
     <div class="psy-detail__actions">
 
+        <!-- TOMBOL KEMBALI DINAMIS -->
+
         <a
-            href="<?= site_url(
-                'psychologist/consultations'
-            ) ?>"
+            href="<?= esc($backUrl, 'attr') ?>"
             class="psy-btn psy-btn--secondary"
         >
             Kembali

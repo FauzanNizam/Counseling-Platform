@@ -208,3 +208,87 @@
         margin-left: 0px;
     }
 }
+
+
+/* ==========================================
+   BOOTSTRAP ICONS - SHARED NAVIGATION
+========================================== */
+
+.sidebar .bi,
+.mobile-nav .bi {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.sidebar a,
+.mobile-nav a {
+    gap: 12px;
+}
+
+
+/* ==========================================
+   BOOTSTRAP ICONS - SIDEBAR
+========================================== */
+
+.sidebar .menu-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.sidebar .menu-icon .bi {
+    display: inline-block;
+    font-size: 19px;
+    line-height: 1;
+    color: inherit;
+}
+
+.sidebar .menu a,
+.sidebar .logout-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* ==========================================
+   BOOTSTRAP ICONS - MOBILE NAVIGATION
+========================================== */
+
+.mobile-nav .nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto 5px;
+}
+
+.mobile-nav .nav-icon .bi {
+    display: inline-block;
+    font-size: 21px;
+    line-height: 1;
+    color: inherit;
+}
+
+.mobile-nav a {
+    text-decoration: none;
+}
+
+.mobile-nav a.active .nav-icon {
+    color: inherit;
+}
+
+@media (max-width: 480px) {
+    .mobile-nav .nav-icon .bi {
+        font-size: 19px;
+    }
+}

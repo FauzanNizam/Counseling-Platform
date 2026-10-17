@@ -15,37 +15,31 @@ $isActive = static function (string $path) use ($currentPath): bool {
 $menuItems = [
     [
         'label' => 'Dashboard',
-        'icon' => '⌂',
+        'icon' => 'bi bi-grid-1x2-fill',
         'url' => site_url('psychologist'),
         'active' => $currentPath === 'psychologist',
     ],
     [
         'label' => 'Jadwal Konsultasi',
-        'icon' => '▣',
+        'icon' => 'bi bi-calendar2-check',
         'url' => site_url('psychologist/consultations'),
         'active' => $isActive('psychologist/consultations'),
     ],
     [
         'label' => 'Jadwal Praktik',
-        'icon' => '▦',
+        'icon' => 'bi bi-calendar-week',
         'url' => site_url('psychologist/practice-schedule'),
         'active' => $isActive('psychologist/practice-schedule'),
     ],
     [
         'label' => 'Klien',
-        'icon' => '♧',
-        'url' => '#',
+        'icon' => 'bi bi-people',
+        'url' => site_url('psychologist/clients'),
         'active' => $isActive('psychologist/clients'),
     ],
     [
-        'label' => 'Pesan',
-        'icon' => '✉',
-        'url' => '#',
-        'active' => $isActive('psychologist/messages'),
-    ],
-    [
         'label' => 'Profil',
-        'icon' => '○',
+        'icon' => 'bi bi-person-circle',
         'url' => site_url('psychologist/profile'),
         'active' => $isActive('psychologist/profile'),
     ],
@@ -56,21 +50,36 @@ $menuItems = [
 ========================================== */
 
 $mobileItems = [
-    $menuItems[0],
+    [
+        'label' => 'Dashboard',
+        'icon' => 'bi bi-grid-1x2-fill',
+        'url' => site_url('psychologist'),
+        'active' => $currentPath === 'psychologist',
+    ],
     [
         'label' => 'Konsultasi',
-        'icon' => '▣',
-        'url' => $menuItems[1]['url'],
-        'active' => $menuItems[1]['active'],
+        'icon' => 'bi bi-calendar2-check',
+        'url' => site_url('psychologist/consultations'),
+        'active' => $isActive('psychologist/consultations'),
     ],
     [
         'label' => 'Praktik',
-        'icon' => '▦',
-        'url' => $menuItems[2]['url'],
-        'active' => $menuItems[2]['active'],
+        'icon' => 'bi bi-calendar-week',
+        'url' => site_url('psychologist/practice-schedule'),
+        'active' => $isActive('psychologist/practice-schedule'),
     ],
-    $menuItems[4],
-    $menuItems[5],
+    [
+        'label' => 'Klien',
+        'icon' => 'bi bi-people',
+        'url' => site_url('psychologist/clients'),
+        'active' => $isActive('psychologist/clients'),
+    ],
+    [
+        'label' => 'Profil',
+        'icon' => 'bi bi-person-circle',
+        'url' => site_url('psychologist/profile'),
+        'active' => $isActive('psychologist/profile'),
+    ],
 ];
 
 /* ==========================================
@@ -95,7 +104,10 @@ $shared = [
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>
         <?= esc($title ?? 'Dashboard Psikolog - Counseling Platform') ?>
@@ -118,6 +130,13 @@ $shared = [
         rel="stylesheet"
         href="<?= base_url('assets/css/psychologist.css') ?>"
     >
+
+    <!-- BOOTSTRAP ICONS OFFLINE -->
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/bootstrap-icons/bootstrap-icons.css') ?>"
+    >
+
 </head>
 
 <body>
@@ -131,10 +150,11 @@ $shared = [
         $shared
     ) ?>
 
-
     <!-- MOBILE SIDEBAR BACKDROP -->
-    <div class="nav-backdrop" id="navBackdrop"></div>
-
+    <div
+        class="nav-backdrop"
+        id="navBackdrop"
+    ></div>
 
     <!-- ==========================================
          MAIN CONTENT
@@ -148,7 +168,6 @@ $shared = [
             $shared
         ) ?>
 
-
         <section class="content">
 
             <?php
@@ -157,18 +176,19 @@ $shared = [
 
             <?php if ($accessError): ?>
 
-                <div class="alert alert-warning" role="alert">
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                >
                     <?= esc($accessError) ?>
                 </div>
 
             <?php endif; ?>
 
-
             <!-- HALAMAN PSIKOLOG -->
             <?= $this->renderSection('content') ?>
 
         </section>
-
 
         <!-- SHARED FOOTER -->
         <?= view(
@@ -176,7 +196,6 @@ $shared = [
         ) ?>
 
     </main>
-
 
     <!-- ==========================================
          SHARED MOBILE NAVIGATION
@@ -186,7 +205,6 @@ $shared = [
         'Modules\Shared\Views\partials\workspace\mobile_nav',
         $shared
     ) ?>
-
 
     <!-- ==========================================
          JAVASCRIPT
@@ -216,11 +234,11 @@ $shared = [
         defer
     ></script>
 
+    <!-- LINK GOOGLE MEET / ZOOM -->
     <script
-    src="<?= base_url('assets/js/psychologist-meeting.js') ?>"
-    defer
-></script>
+        src="<?= base_url('assets/js/psychologist-meeting.js') ?>"
+        defer
+    ></script>
 
 </body>
-
 </html>

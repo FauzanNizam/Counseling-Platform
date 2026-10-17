@@ -437,26 +437,36 @@ $routes->group(
             'Consultations::saveMeeting/$1'
         );
 
+        // buat halaman detail klien
+        $routes->get(
+            'clients',
+            '\Modules\Psychologist\Controllers\Clients::index'
+        );
+
+        $routes->get(
+            'clients/(:num)',
+            '\Modules\Psychologist\Controllers\Clients::show/$1'
+        );
+
+
         // ==========================================
         // PROFIL PSIKOLOG
         // ==========================================
     
-        // Menampilkan profil
+
         $routes->get(
             'profile',
-            'Profile::index'
+            '\Modules\Psychologist\Controllers\Profile::index'
         );
 
-        // Memperbarui profil
         $routes->post(
             'profile/update',
-            'Profile::update'
+            '\Modules\Psychologist\Controllers\Profile::update'
         );
 
-        // Mengubah password
         $routes->post(
             'profile/password',
-            'Profile::updatePassword'
+            '\Modules\Psychologist\Controllers\Profile::updatePassword'
         );
 
         // ==========================================
