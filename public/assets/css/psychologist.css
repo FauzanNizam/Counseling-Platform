@@ -1130,3 +1130,70 @@ body.psy-modal-open {
     }
 }
 
+
+/* ==========================================
+   PICK-UP COUNSELING - DETAIL PSIKOLOG
+   ========================================== */
+
+.psy-pickup__description {
+    margin: 8px 0 22px;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.psy-pickup__address {
+    display: block;
+    color: #1f2937;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.psy-pickup__empty {
+    margin: 8px 0 0;
+    color: #9ca3af;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.psy-pickup__notice,
+.psy-pickup__ready {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.psy-pickup__notice {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+}
+
+.psy-pickup__ready {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+}
+
+.psy-pickup__notice strong,
+.psy-pickup__ready strong {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.psy-pickup__notice p,
+.psy-pickup__ready p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .psy-pickup__notice,
+    .psy-pickup__ready {
+        padding: 14px;
+        font-size: 13px;
+    }
+}

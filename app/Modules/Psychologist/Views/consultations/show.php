@@ -4,6 +4,11 @@
 <?= $this->section('content') ?>
 
 <?php
+
+// ==========================================
+// DATA KONSULTASI
+// ==========================================
+
 $consultationId = (int) ($consultation['id_konsultasi'] ?? 0);
 $status = $consultation['status'] ?? '-';
 $tipeSesi = $consultation['tipe_sesi'] ?? '-';
@@ -19,6 +24,20 @@ $statusClass = match ($status) {
 };
 
 // ==========================================
+// INFORMASI PICK-UP
+// ==========================================
+
+$titikJemput = trim(
+    (string) ($consultation['titik_jemput'] ?? '')
+);
+
+$titikTujuan = trim(
+    (string) ($consultation['titik_tujuan'] ?? '')
+);
+
+$alamatLengkap = $titikJemput !== '' && $titikTujuan !== '';
+
+// ==========================================
 // TIMEZONE WITA
 // ==========================================
 
@@ -31,7 +50,11 @@ if (
     !empty($consultation['tanggal']) &&
     !empty($consultation['waktu_mulai'])
 ) {
-    $time = substr((string) $consultation['waktu_mulai'], 0, 8);
+    $time = substr(
+        (string) $consultation['waktu_mulai'],
+        0,
+        8
+    );
 
     if (strlen($time) === 5) {
         $time .= ':00';
@@ -55,20 +78,39 @@ $canStart = $status === 'Dikonfirmasi'
 $canFinish = $status === 'Berlangsung';
 
 $canManageMeeting = $tipeSesi === 'Online'
-    && in_array($status, ['Dikonfirmasi', 'Berlangsung'], true);
+    && in_array(
+        $status,
+        ['Dikonfirmasi', 'Berlangsung'],
+        true
+    );
 
 // ==========================================
-// LINK MEETING
+// LINK GOOGLE MEET / ZOOM
 // ==========================================
 
 $platform = $consultation['platform'] ?? '';
-$meetingUrl = trim((string) ($consultation['link_meeting'] ?? ''));
+
+$meetingUrl = trim(
+    (string) ($consultation['link_meeting'] ?? '')
+);
 
 $meetingParts = parse_url($meetingUrl);
-$meetingHost = strtolower($meetingParts['host'] ?? '');
-$meetingScheme = strtolower($meetingParts['scheme'] ?? '');
+$meetingParts = is_array($meetingParts)
+    ? $meetingParts
+    : [];
 
-$validMeeting = filter_var($meetingUrl, FILTER_VALIDATE_URL)
+$meetingHost = strtolower(
+    $meetingParts['host'] ?? ''
+);
+
+$meetingScheme = strtolower(
+    $meetingParts['scheme'] ?? ''
+);
+
+$validMeeting = filter_var(
+    $meetingUrl,
+    FILTER_VALIDATE_URL
+)
     && $meetingScheme === 'https'
     && (
         $meetingHost === 'meet.google.com'
@@ -82,8 +124,15 @@ $validMeeting = filter_var($meetingUrl, FILTER_VALIDATE_URL)
 // WHATSAPP KLIEN
 // ==========================================
 
-$rawPhone = (string) ($consultation['no_telepon_klien'] ?? '');
-$phone = preg_replace('/\D+/', '', $rawPhone);
+$rawPhone = (string) (
+    $consultation['no_telepon_klien'] ?? ''
+);
+
+$phone = preg_replace(
+    '/\D+/',
+    '',
+    $rawPhone
+);
 
 if (str_starts_with($phone, '0')) {
     $phone = '62' . substr($phone, 1);
@@ -91,7 +140,10 @@ if (str_starts_with($phone, '0')) {
     $phone = '62' . $phone;
 }
 
-$validPhone = preg_match('/^62[0-9]{8,13}$/', $phone) === 1;
+$validPhone = preg_match(
+    '/^62[0-9]{8,13}$/',
+    $phone
+) === 1;
 
 $whatsappMessage = sprintf(
     'Halo %s, saya menghubungi terkait jadwal konsultasi Anda di Counseling Platform.',
@@ -99,7 +151,8 @@ $whatsappMessage = sprintf(
 );
 
 $whatsappUrl = $validPhone
-    ? 'https://wa.me/' . $phone . '?text=' . rawurlencode($whatsappMessage)
+    ? 'https://wa.me/' . $phone
+        . '?text=' . rawurlencode($whatsappMessage)
     : '';
 
 $canContactClient = in_array(
@@ -108,8 +161,13 @@ $canContactClient = in_array(
     true
 );
 
+// ==========================================
+// NOTIFIKASI
+// ==========================================
+
 $success = session()->getFlashdata('success');
 $error = session()->getFlashdata('error');
+
 ?>
 
 <!-- ==========================================
@@ -118,9 +176,12 @@ $error = session()->getFlashdata('error');
 
 <div class="dashboard-header">
     <h1>Detail Konsultasi</h1>
-    <p>Kelola jadwal, akses komunikasi, dan pelaksanaan sesi konsultasi.</p>
-</div>
 
+    <p>
+        Kelola jadwal, akses komunikasi,
+        dan pelaksanaan sesi konsultasi.
+    </p>
+</div>
 
 <!-- ==========================================
      DETAIL KONSULTASI
@@ -131,33 +192,50 @@ $error = session()->getFlashdata('error');
     <div class="psy-detail__top">
 
         <div>
-            <h2>Konsultasi #<?= esc($consultationId) ?></h2>
-            <p>Informasi konsultasi bersama klien.</p>
+            <h2>
+                Konsultasi #<?= esc($consultationId) ?>
+            </h2>
+
+            <p>
+                Informasi konsultasi bersama klien.
+            </p>
         </div>
 
-        <span class="psychologist-status psychologist-status--<?= esc($statusClass) ?>">
+        <span
+            class="psychologist-status psychologist-status--<?= esc($statusClass, 'attr') ?>"
+        >
             <?= esc($status) ?>
         </span>
 
     </div>
 
-
     <!-- NOTIFIKASI -->
 
     <?php if ($success): ?>
-        <div class="psy-alert psy-alert--success" role="alert">
+
+        <div
+            class="psy-alert psy-alert--success"
+            role="alert"
+        >
             <?= esc($success) ?>
         </div>
+
     <?php endif; ?>
 
     <?php if ($error): ?>
-        <div class="psy-alert psy-alert--error" role="alert">
+
+        <div
+            class="psy-alert psy-alert--error"
+            role="alert"
+        >
             <?= esc($error) ?>
         </div>
+
     <?php endif; ?>
 
-
-    <!-- INFORMASI KONSULTASI -->
+    <!-- ======================================
+         INFORMASI KONSULTASI
+    ======================================= -->
 
     <div class="psy-detail__grid">
 
@@ -168,25 +246,39 @@ $error = session()->getFlashdata('error');
 
         <div class="psy-detail__item">
             <span>Tanggal Konsultasi</span>
+
             <strong>
                 <?= !empty($consultation['tanggal'])
-                    ? esc(date('d/m/Y', strtotime($consultation['tanggal'])))
+                    ? esc(date(
+                        'd/m/Y',
+                        strtotime($consultation['tanggal'])
+                    ))
                     : '-' ?>
             </strong>
         </div>
 
         <div class="psy-detail__item">
             <span>Waktu Mulai</span>
+
             <strong>
-                <?= esc(substr($consultation['waktu_mulai'] ?? '-', 0, 5)) ?>
+                <?= esc(substr(
+                    (string) ($consultation['waktu_mulai'] ?? '-'),
+                    0,
+                    5
+                )) ?>
                 WITA
             </strong>
         </div>
 
         <div class="psy-detail__item">
             <span>Waktu Selesai</span>
+
             <strong>
-                <?= esc(substr($consultation['waktu_selesai'] ?? '-', 0, 5)) ?>
+                <?= esc(substr(
+                    (string) ($consultation['waktu_selesai'] ?? '-'),
+                    0,
+                    5
+                )) ?>
                 WITA
             </strong>
         </div>
@@ -198,17 +290,20 @@ $error = session()->getFlashdata('error');
 
         <div class="psy-detail__item">
             <span>Durasi Konsultasi</span>
+
             <strong>
-                <?= esc($consultation['durasi_menit'] ?? '-') ?> menit
+                <?= esc(
+                    $consultation['durasi_menit'] ?? '-'
+                ) ?>
+                menit
             </strong>
         </div>
 
     </div>
 
-
-    <!-- ==========================================
-         AKSES KONSULTASI ONLINE
-    ========================================== -->
+    <!-- ======================================
+         KONSULTASI ONLINE
+    ======================================= -->
 
     <?php if ($tipeSesi === 'Online'): ?>
 
@@ -219,23 +314,27 @@ $error = session()->getFlashdata('error');
             <?php if ($canManageMeeting): ?>
 
                 <p>
-                    Siapkan link Google Meet atau Zoom agar klien
-                    dapat bergabung ke sesi konsultasi.
+                    Siapkan link Google Meet atau Zoom
+                    agar klien dapat bergabung ke sesi
+                    konsultasi.
                 </p>
 
-                <!-- FORM SIMPAN LINK -->
+                <!-- FORM LINK MEETING -->
+
                 <form
                     action="<?= site_url(
-                        'psychologist/consultations/' .
-                        $consultationId .
-                        '/meeting'
+                        'psychologist/consultations/'
+                        . $consultationId
+                        . '/meeting'
                     ) ?>"
                     method="post"
                     class="psy-meeting-form"
                 >
+
                     <?= csrf_field() ?>
 
                     <div class="psy-practice__field">
+
                         <label for="meetingPlatform">
                             Platform Konsultasi
                         </label>
@@ -251,21 +350,28 @@ $error = session()->getFlashdata('error');
 
                             <option
                                 value="Google Meet"
-                                <?= $platform === 'Google Meet' ? 'selected' : '' ?>
+                                <?= $platform === 'Google Meet'
+                                    ? 'selected'
+                                    : '' ?>
                             >
                                 Google Meet
                             </option>
 
                             <option
                                 value="Zoom"
-                                <?= $platform === 'Zoom' ? 'selected' : '' ?>
+                                <?= $platform === 'Zoom'
+                                    ? 'selected'
+                                    : '' ?>
                             >
                                 Zoom
                             </option>
+
                         </select>
+
                     </div>
 
                     <div class="psy-practice__field">
+
                         <label for="meetingLink">
                             Link Meeting
                         </label>
@@ -274,38 +380,53 @@ $error = session()->getFlashdata('error');
                             id="meetingLink"
                             type="url"
                             name="link_meeting"
-                            value="<?= esc($meetingUrl, 'attr') ?>"
+                            value="<?= esc(
+                                $meetingUrl,
+                                'attr'
+                            ) ?>"
                             placeholder="https://meet.google.com/xxx-xxxx-xxx"
                             maxlength="2048"
                             required
                         >
+
                     </div>
 
                     <div class="psy-meeting-form__actions">
+
                         <button
                             type="submit"
                             class="psy-btn psy-btn--primary"
                         >
                             Simpan Link Meeting
                         </button>
+
                     </div>
 
                 </form>
+
+                <!-- LINK SUDAH TERSIMPAN -->
 
                 <?php if ($validMeeting): ?>
 
                     <div class="psy-meeting-saved">
 
-                        <strong>Link Meeting Tersimpan</strong>
+                        <strong>
+                            Link Meeting Tersimpan
+                        </strong>
 
                         <p>
-                            <?= esc($platform ?: 'Video Call') ?>
+                            <?= esc(
+                                $platform ?: 'Video Call'
+                            ) ?>
                         </p>
 
                         <div class="psy-meeting-saved__actions">
 
                             <a
-                                href="<?= esc($meetingUrl, 'attr') ?>"
+                                href="<?= esc(
+                                    $meetingUrl,
+                                    'attr'
+                                ) ?>"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="psy-btn psy-btn--primary"
@@ -316,7 +437,10 @@ $error = session()->getFlashdata('error');
                             <button
                                 type="button"
                                 class="psy-btn psy-btn--secondary js-copy-meeting"
-                                data-link="<?= esc($meetingUrl, 'attr') ?>"
+                                data-link="<?= esc(
+                                    $meetingUrl,
+                                    'attr'
+                                ) ?>"
                             >
                                 Salin Link
                             </button>
@@ -336,13 +460,24 @@ $error = session()->getFlashdata('error');
             <?php else: ?>
 
                 <p>
-                    <?php if ($status === 'Menunggu Konfirmasi'): ?>
-                        Link meeting dapat disiapkan setelah
-                        permintaan konsultasi dikonfirmasi.
-                    <?php elseif ($status === 'Selesai'): ?>
+                    <?php if (
+                        $status === 'Menunggu Konfirmasi'
+                    ): ?>
+
+                        Link meeting dapat disiapkan
+                        setelah permintaan konsultasi
+                        dikonfirmasi.
+
+                    <?php elseif (
+                        $status === 'Selesai'
+                    ): ?>
+
                         Sesi konsultasi ini sudah selesai.
+
                     <?php else: ?>
+
                         Konsultasi ini tidak aktif.
+
                     <?php endif; ?>
                 </p>
 
@@ -352,10 +487,9 @@ $error = session()->getFlashdata('error');
 
     <?php endif; ?>
 
-
-    <!-- ==========================================
+    <!-- ======================================
          WHATSAPP KLIEN
-    ========================================== -->
+    ======================================= -->
 
     <?php if ($canContactClient): ?>
 
@@ -364,14 +498,17 @@ $error = session()->getFlashdata('error');
             <h3>Komunikasi dengan Klien</h3>
 
             <p>
-                Hubungi klien melalui WhatsApp untuk koordinasi
-                pelaksanaan konsultasi.
+                Hubungi klien melalui WhatsApp untuk
+                koordinasi pelaksanaan konsultasi.
             </p>
 
             <?php if ($validPhone): ?>
 
                 <a
-                    href="<?= esc($whatsappUrl, 'attr') ?>"
+                    href="<?= esc(
+                        $whatsappUrl,
+                        'attr'
+                    ) ?>"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="psy-btn psy-btn--accept"
@@ -382,8 +519,8 @@ $error = session()->getFlashdata('error');
             <?php else: ?>
 
                 <div class="psy-alert psy-alert--error">
-                    Nomor telepon klien belum tersedia atau
-                    formatnya tidak valid.
+                    Nomor telepon klien belum tersedia
+                    atau formatnya tidak valid.
                 </div>
 
             <?php endif; ?>
@@ -392,45 +529,122 @@ $error = session()->getFlashdata('error');
 
     <?php endif; ?>
 
-
-    <!-- ==========================================
-         INFORMASI PICK-UP
-    ========================================== -->
+    <!-- ======================================
+         INFORMASI PICK-UP COUNSELING
+    ======================================= -->
 
     <?php if ($tipeSesi === 'Pick-up'): ?>
 
-        <div class="psy-detail__meeting">
+        <div class="psy-detail__meeting psy-pickup">
 
-            <h3>Informasi Pick-up</h3>
+            <h3>Informasi Pick-up Counseling</h3>
+
+            <p class="psy-pickup__description">
+                Layanan konseling dilakukan selama
+                perjalanan bersama psikolog.
+                Berikut informasi lokasi penjemputan
+                dan tujuan yang diberikan klien.
+            </p>
 
             <div class="psy-detail__grid">
 
-                <div class="psy-detail__item">
-                    <span>Titik Jemput</span>
-                    <strong>
-                        <?= esc($consultation['titik_jemput'] ?? '-') ?>
-                    </strong>
-                </div>
+                <!-- TITIK JEMPUT -->
 
                 <div class="psy-detail__item">
+
+                    <span>Titik Jemput</span>
+
+                    <?php if ($titikJemput !== ''): ?>
+
+                        <strong class="psy-pickup__address">
+                            <?= nl2br(esc($titikJemput)) ?>
+                        </strong>
+
+                    <?php else: ?>
+
+                        <p class="psy-pickup__empty">
+                            Alamat penjemputan
+                            belum tersedia.
+                        </p>
+
+                    <?php endif; ?>
+
+                </div>
+
+                <!-- TITIK TUJUAN -->
+
+                <div class="psy-detail__item">
+
                     <span>Titik Tujuan</span>
-                    <strong>
-                        <?= esc($consultation['titik_tujuan'] ?? '-') ?>
-                    </strong>
+
+                    <?php if ($titikTujuan !== ''): ?>
+
+                        <strong class="psy-pickup__address">
+                            <?= nl2br(esc($titikTujuan)) ?>
+                        </strong>
+
+                    <?php else: ?>
+
+                        <p class="psy-pickup__empty">
+                            Alamat tujuan
+                            belum tersedia.
+                        </p>
+
+                    <?php endif; ?>
+
                 </div>
 
             </div>
+
+            <!-- STATUS INFORMASI LOKASI -->
+
+            <?php if (!$alamatLengkap): ?>
+
+                <div class="psy-pickup__notice">
+
+                    <strong>
+                        Informasi lokasi belum lengkap.
+                    </strong>
+
+                    <p>
+                        Silakan hubungi klien melalui
+                        WhatsApp untuk mengonfirmasi
+                        alamat penjemputan dan tujuan
+                        sebelum perjalanan dimulai.
+                    </p>
+
+                </div>
+
+            <?php else: ?>
+
+                <div class="psy-pickup__ready">
+
+                    <strong>
+                        Informasi lokasi tersedia.
+                    </strong>
+
+                    <p>
+                        Pastikan kembali alamat
+                        penjemputan, titik pertemuan,
+                        dan tujuan perjalanan bersama
+                        klien sebelum memulai sesi.
+                    </p>
+
+                </div>
+
+            <?php endif; ?>
 
         </div>
 
     <?php endif; ?>
 
+    <!-- ======================================
+         INFORMASI STATUS KONSULTASI
+    ======================================= -->
 
-    <!-- ==========================================
-         INFORMASI STATUS
-    ========================================== -->
-
-    <?php if ($status === 'Dikonfirmasi' && !$canStart): ?>
+    <?php if (
+        $status === 'Dikonfirmasi' && !$canStart
+    ): ?>
 
         <div class="psy-detail__info">
             <p>
@@ -463,36 +677,41 @@ $error = session()->getFlashdata('error');
 
         <div class="psy-detail__info">
             <p>
-                Konsultasi ini telah dibatalkan atau ditolak.
+                Konsultasi ini telah dibatalkan
+                atau ditolak.
             </p>
         </div>
 
     <?php endif; ?>
 
-
-    <!-- ==========================================
+    <!-- ======================================
          TOMBOL AKSI SESI
-    ========================================== -->
+    ======================================= -->
 
     <div class="psy-detail__actions">
 
         <a
-            href="<?= site_url('psychologist/consultations') ?>"
+            href="<?= site_url(
+                'psychologist/consultations'
+            ) ?>"
             class="psy-btn psy-btn--secondary"
         >
             Kembali
         </a>
 
+        <!-- TERIMA DAN TOLAK -->
+
         <?php if ($canRespond): ?>
 
             <form
                 action="<?= site_url(
-                    'psychologist/consultations/' .
-                    $consultationId .
-                    '/confirm'
+                    'psychologist/consultations/'
+                    . $consultationId
+                    . '/confirm'
                 ) ?>"
                 method="post"
             >
+
                 <?= csrf_field() ?>
 
                 <button
@@ -501,6 +720,7 @@ $error = session()->getFlashdata('error');
                 >
                     Terima Konsultasi
                 </button>
+
             </form>
 
             <button
@@ -508,9 +728,9 @@ $error = session()->getFlashdata('error');
                 class="psy-btn psy-btn--reject js-session-modal"
                 data-action="<?= esc(
                     site_url(
-                        'psychologist/consultations/' .
-                        $consultationId .
-                        '/reject'
+                        'psychologist/consultations/'
+                        . $consultationId
+                        . '/reject'
                     ),
                     'attr'
                 ) ?>"
@@ -521,6 +741,8 @@ $error = session()->getFlashdata('error');
                 Tolak Konsultasi
             </button>
 
+        <!-- MULAI SESI -->
+
         <?php elseif ($canStart): ?>
 
             <button
@@ -528,9 +750,9 @@ $error = session()->getFlashdata('error');
                 class="psy-btn psy-btn--primary js-session-modal"
                 data-action="<?= esc(
                     site_url(
-                        'psychologist/consultations/' .
-                        $consultationId .
-                        '/start'
+                        'psychologist/consultations/'
+                        . $consultationId
+                        . '/start'
                     ),
                     'attr'
                 ) ?>"
@@ -541,6 +763,8 @@ $error = session()->getFlashdata('error');
                 Mulai Sesi
             </button>
 
+        <!-- SELESAIKAN SESI -->
+
         <?php elseif ($canFinish): ?>
 
             <button
@@ -548,9 +772,9 @@ $error = session()->getFlashdata('error');
                 class="psy-btn psy-btn--accept js-session-modal"
                 data-action="<?= esc(
                     site_url(
-                        'psychologist/consultations/' .
-                        $consultationId .
-                        '/finish'
+                        'psychologist/consultations/'
+                        . $consultationId
+                        . '/finish'
                     ),
                     'attr'
                 ) ?>"
@@ -567,7 +791,6 @@ $error = session()->getFlashdata('error');
 
 </div>
 
-
 <!-- ==========================================
      MODAL KONFIRMASI SESI
 ========================================== -->
@@ -581,6 +804,7 @@ $error = session()->getFlashdata('error');
     aria-describedby="psySessionModalMessage"
     aria-hidden="true"
 >
+
     <div
         class="psy-modal__backdrop"
         data-close-session-modal
@@ -588,7 +812,10 @@ $error = session()->getFlashdata('error');
 
     <div class="psy-modal__dialog">
 
-        <div class="psy-modal__icon" aria-hidden="true">
+        <div
+            class="psy-modal__icon"
+            aria-hidden="true"
+        >
             !
         </div>
 
@@ -598,7 +825,11 @@ $error = session()->getFlashdata('error');
 
         <p id="psySessionModalMessage"></p>
 
-        <form id="psySessionForm" method="post">
+        <form
+            id="psySessionForm"
+            method="post"
+        >
+
             <?= csrf_field() ?>
 
             <div class="psy-modal__actions">
@@ -620,6 +851,7 @@ $error = session()->getFlashdata('error');
                 </button>
 
             </div>
+
         </form>
 
     </div>
