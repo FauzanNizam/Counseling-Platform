@@ -1,226 +1,298 @@
-<?= $this->extend('Modules\Shared\Views\layouts\client') ?>
 
+<?= $this->extend('Modules\Shared\Views\layouts\client') ?>
 <?= $this->section('content') ?>
 
 <?php
-/** @var array $jadwal */
+$timezone = new \DateTimeZone('Asia/Makassar');
+
+$today = (new \DateTimeImmutable(
+    'now',
+    $timezone
+))->format('Y-m-d');
+
+$selectedType = old('tipe_sesi') ?? '';
 ?>
 
-<style>
-    .booking-page {
-        max-width: 850px;
-        margin: 0 auto;
-        padding: 28px;
-    }
-
-    .booking-title {
-        color: #5b21b6;
-        font-size: 30px;
-        margin: 0 0 8px;
-    }
-
-    .booking-subtitle {
-        color: #6b7280;
-        margin-bottom: 26px;
-    }
-
-    .booking-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 28px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, .04);
-    }
-
-    .booking-field {
-        margin-bottom: 20px;
-    }
-
-    .booking-field label {
-        display: block;
-        margin-bottom: 8px;
-        color: #374151;
-        font-weight: 600;
-    }
-
-    .booking-field select,
-    .booking-field input {
-        box-sizing: border-box;
-        width: 100%;
-        min-height: 48px;
-        padding: 12px 14px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        background: #fff;
-        font: inherit;
-    }
-
-    .booking-field select:focus,
-    .booking-field input:focus {
-        outline: none;
-        border-color: #7c3aed;
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, .12);
-    }
-
-    .booking-button {
-        display: block;
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 10px;
-        background: #5b21b6;
-        color: white;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .booking-button:hover {
-        background: #4c1d95;
-    }
-
-    .booking-back {
-        display: inline-block;
-        margin-bottom: 20px;
-        color: #6d28d9;
-        text-decoration: none;
-    }
-
-    .booking-notice {
-        padding: 14px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-
-    .booking-error {
-        background: #fef2f2;
-        color: #b91c1c;
-    }
-
-    .booking-empty {
-        background: #f5f3ff;
-        color: #5b21b6;
-        padding: 20px;
-        border-radius: 12px;
-    }
-
-    @media (max-width: 600px) {
-        .booking-page {
-            padding: 20px 14px;
-        }
-
-        .booking-card {
-            padding: 20px;
-        }
-
-        .booking-title {
-            font-size: 25px;
-        }
-    }
-</style>
+<link
+    rel="stylesheet"
+    href="<?= base_url('assets/css/client-booking.css') ?>"
+>
 
 <div class="booking-page">
-    <a class="booking-back" href="<?= site_url('client/konsultan') ?>">
+
+    <!-- KEMBALI -->
+    <a
+        class="booking-back"
+        href="<?= site_url('client/konsultan') ?>"
+    >
         ← Kembali ke Cari Psikolog
     </a>
 
-    <h1 class="booking-title">Buat Janji Konseling</h1>
-
+    <!-- HEADER -->
+    <h1 class="booking-title">
+        Buat Janji Konseling
+    </h1>
 
     <p class="booking-subtitle">
-        Pilih jadwal praktik dan tipe sesi yang sesuai dengan kebutuhanmu.
+        Pilih jadwal praktik dan tipe sesi yang sesuai
+        dengan kebutuhanmu.
     </p>
 
+    <!-- PSIKOLOG YANG DIPILIH -->
     <?php if (!empty($konsultan)): ?>
-        <div style="
-        padding: 16px 20px;
-        margin-bottom: 20px;
-        background: #f5f3ff;
-        border: 1px solid #ddd6fe;
-        border-radius: 12px;
-        color: #5b21b6;
-    ">
+
+        <div class="booking-selected">
+
             <strong>Psikolog pilihanmu</strong>
-            <div style="font-size: 18px; font-weight: 600; margin-top: 6px;">
+
+            <div class="booking-selected__name">
                 <?= esc($konsultan['nama_lengkap']) ?>
             </div>
-            <div style="font-size: 14px; margin-top: 4px;">
-                <?= esc($konsultan['spesialisasi']) ?>
+
+            <div class="booking-selected__specialty">
+                <?= esc($konsultan['spesialisasi'] ?? '-') ?>
             </div>
+
         </div>
+
     <?php endif; ?>
 
+    <!-- PESAN ERROR -->
     <?php if (session()->getFlashdata('error')): ?>
-        <div class="booking-notice booking-error">
+
+        <div
+            class="booking-notice booking-error"
+            role="alert"
+        >
             <?= esc(session()->getFlashdata('error')) ?>
         </div>
+
     <?php endif; ?>
 
+    <!-- JADWAL TIDAK TERSEDIA -->
     <?php if (empty($jadwal)): ?>
+
         <div class="booking-empty">
             Belum ada jadwal praktik yang tersedia saat ini.
         </div>
+
     <?php else: ?>
+
+        <!-- FORM BOOKING -->
         <form
             class="booking-card"
+            id="bookingForm"
             action="<?= site_url('client/konsultasi/simpan') ?>"
-            method="post">
+            method="post"
+        >
+
             <?= csrf_field() ?>
 
+            <!-- PILIH JADWAL -->
             <div class="booking-field">
-                <label for="id_jadwal">Pilih Jadwal Praktik</label>
 
-                <select id="id_jadwal" name="id_jadwal" required>
-                    <option value="">-- Pilih jadwal praktik --</option>
+                <label for="id_jadwal">
+                    Pilih Jadwal Praktik
+                </label>
+
+                <select
+                    id="id_jadwal"
+                    name="id_jadwal"
+                    required
+                >
+
+                    <option value="">
+                        -- Pilih jadwal praktik --
+                    </option>
 
                     <?php foreach ($jadwal as $item): ?>
+
                         <option
-                            value="<?= esc($item['id_jadwal']) ?>"
-                            <?= old('id_jadwal') == $item['id_jadwal'] ? 'selected' : '' ?>>
-                            
-                            — <?= esc($item['hari']) ?>
+                            value="<?= esc($item['id_jadwal'], 'attr') ?>"
+                            <?= old('id_jadwal') == $item['id_jadwal']
+                                ? 'selected'
+                                : '' ?>
+                        >
+                            <?= esc($item['hari']) ?>
                             (<?= esc(substr($item['jam_mulai'], 0, 5)) ?>
                             –<?= esc(substr($item['jam_selesai'], 0, 5)) ?>)
                         </option>
+
                     <?php endforeach; ?>
+
                 </select>
+
             </div>
 
+            <!-- TANGGAL KONSELING -->
             <div class="booking-field">
-                <label for="tanggal">Tanggal Konseling</label>
+
+                <label for="tanggal">
+                    Tanggal Konseling
+                </label>
 
                 <input
                     type="date"
                     id="tanggal"
                     name="tanggal"
-                    min="<?= date('Y-m-d') ?>"
-                    value="<?= esc(old('tanggal')) ?>"
-                    required>
+                    min="<?= esc($today, 'attr') ?>"
+                    value="<?= esc(old('tanggal') ?? '', 'attr') ?>"
+                    required
+                >
 
-                <small style="color:#6b7280;">
-                    Pilih tanggal yang sesuai dengan hari praktik konsultan.
+                <small>
+                    Pilih tanggal sesuai hari praktik psikolog.
+                    Waktu konsultasi menggunakan WITA.
                 </small>
+
             </div>
 
+            <!-- TIPE SESI -->
             <div class="booking-field">
-                <label for="tipe_sesi">Tipe Sesi</label>
 
-                <select id="tipe_sesi" name="tipe_sesi" required>
-                    <option value="">-- Pilih tipe sesi --</option>
-                    <option value="Online" <?= old('tipe_sesi') === 'Online' ? 'selected' : '' ?>>
+                <label for="tipe_sesi">
+                    Tipe Sesi
+                </label>
+
+                <select
+                    id="tipe_sesi"
+                    name="tipe_sesi"
+                    required
+                >
+
+                    <option value="">
+                        -- Pilih tipe sesi --
+                    </option>
+
+                    <option
+                        value="Online"
+                        <?= $selectedType === 'Online'
+                            ? 'selected'
+                            : '' ?>
+                    >
                         Online
                     </option>
-                    <option value="Pick-up" <?= old('tipe_sesi') === 'Pick-up' ? 'selected' : '' ?>>
-                        Pick-up
+
+                    <option
+                        value="Pick-up"
+                        <?= $selectedType === 'Pick-up'
+                            ? 'selected'
+                            : '' ?>
+                    >
+                        Pick-up Counseling
                     </option>
+
                 </select>
+
+                <small>
+                    Online dilakukan melalui video call.
+                    Pick-up Counseling dilakukan dalam
+                    perjalanan bersama psikolog.
+                </small>
+
             </div>
 
-            <button class="booking-button" type="submit">
+            <!-- LOKASI PICK-UP -->
+            <section
+                id="pickupSection"
+                class="booking-pickup"
+                <?= $selectedType === 'Pick-up' ? '' : 'hidden' ?>
+            >
+
+                <div class="booking-pickup__header">
+
+                    <h2>
+                        Lokasi Pick-up Counseling
+                    </h2>
+
+                    <p>
+                        Masukkan alamat lengkap penjemputan
+                        dan tujuan perjalanan. Psikolog akan
+                        menggunakan informasi ini untuk
+                        koordinasi penjemputan.
+                    </p>
+
+                </div>
+
+                <!-- TITIK JEMPUT -->
+                <div class="booking-field">
+
+                    <label for="titik_jemput">
+                        Alamat Lengkap Titik Jemput
+                    </label>
+
+                    <textarea
+                        id="titik_jemput"
+                        name="titik_jemput"
+                        rows="3"
+                        maxlength="500"
+                        placeholder="Contoh: Jl. Ahmad Yani KM 35, Banjarbaru, Kalimantan Selatan, dekat gerbang utama"
+                        <?= $selectedType === 'Pick-up'
+                            ? 'required'
+                            : '' ?>
+                    ><?= esc(old('titik_jemput') ?? '') ?></textarea>
+
+                    <small>
+                        Cantumkan nama jalan, nomor bangunan,
+                        kecamatan, kota, dan patokan lokasi.
+                    </small>
+
+                </div>
+
+                <!-- TITIK TUJUAN -->
+                <div class="booking-field">
+
+                    <label for="titik_tujuan">
+                        Alamat Lengkap Titik Tujuan
+                    </label>
+
+                    <textarea
+                        id="titik_tujuan"
+                        name="titik_tujuan"
+                        rows="3"
+                        maxlength="500"
+                        placeholder="Contoh: Jl. Brigjen H. Hasan Basri, Banjarmasin Utara, Kota Banjarmasin"
+                        <?= $selectedType === 'Pick-up'
+                            ? 'required'
+                            : '' ?>
+                    ><?= esc(old('titik_tujuan') ?? '') ?></textarea>
+
+                    <small>
+                        Masukkan tujuan perjalanan yang
+                        diinginkan untuk sesi konseling.
+                    </small>
+
+                </div>
+
+                <!-- INFORMASI TAMBAHAN -->
+                <p class="booking-privacy-note">
+                    Informasi lokasi digunakan untuk
+                    keperluan layanan Pick-up Counseling.
+                    Pastikan alamat benar dan mudah ditemukan.
+                    Koordinasi lebih lanjut dapat dilakukan
+                    melalui WhatsApp setelah konsultasi
+                    dikonfirmasi.
+                </p>
+
+            </section>
+
+            <!-- TOMBOL SIMPAN -->
+            <button
+                class="booking-button"
+                type="submit"
+            >
                 Ajukan Janji Konseling
             </button>
+
         </form>
+
     <?php endif; ?>
+
 </div>
+
+<script
+    src="<?= base_url('assets/js/client-booking.js') ?>"
+    defer
+></script>
 
 <?= $this->endSection() ?>
